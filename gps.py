@@ -47,14 +47,14 @@ def processGGA(inp):
 
 	buf = inp[4][:3] # Grab longitude.
 	lon = float(buf) # Turn it into number.
-	buf = inp[4][:3] # Grab minutes.
+	buf = inp[4][3:] # Grab minutes.
 	lon += float(buf) / 60 # Add it to lon.
 	if inp[5] == 'W': # If it's west, negate.
 		lon *= -1
-	elif inp[5] != 'E' # If it's not east nor west, then what?
+	elif inp[5] != 'E': # If it's not east nor west, then what?
 		print "ERROR: Neither east or west??"
 
-	alt = float(buf[9]) # Grab the altitude and turn it into a number.
+	alt = float(inp[9]) # Grab the altitude and turn it into a number.
 
 	# This is for debugging purposes.
 	print "Lat:", lat
