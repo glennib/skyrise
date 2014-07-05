@@ -11,7 +11,7 @@ CMD_GET = 0x00 # Message to read new values.
 
 SLEEP = 1.0 # How long of a pause to take between reads.
 
-PATH = '../data/pressure.txt' # Path to write new pressure to.
+PATH = '/home/pi/skyrise/data/pressure.txt' # Path to write new pressure to.
 
 
 # These are constants used to calculate read values. Gathered from chip.
@@ -61,7 +61,7 @@ def getGY63():
 
 	# make gy63 read pressure
 	bus.write_byte(ADR, CMD_READ_P)
-	time.sleep(0.05)
+	time.sleep(0.015)
 	
 	# get pressure
 	d1 = bus.read_i2c_block_data(ADR, CMD_GET)
@@ -82,8 +82,8 @@ def getGY63():
 	d2 = d2[0] * 65536 + d2[1] * 256.0 + d2[2]
 
 	dT = d2 - c5 * 2**8
-	off = c2 * 2**17 + dT * c4 / 2**6
-	sens = c1 * 2**16 + dT * c3 / 2**7
+	off = c2 * 2**16 + dT * c4 / 2**7
+	sens = c1 * 2**15 + dT * c3 / 2**8
 
 	temp = (2000 + (dT * c6) / 2**23) / 100
 	pres = (((d1 * sens) / 2**21 - off) / 2**15) / 100
@@ -93,8 +93,8 @@ initGY63() # Initialize the sensor.
 while True:
 	getGY63()
 	s = str(pres) + ',' + str(temp)
+	f = open(PATH, "w")
 	try:
-		f = open(PATH, 'w')
 		f.write(s)
 	except:
 		print "Error with opening or writing to pressure file."
