@@ -3,7 +3,7 @@ import serial
 
 PORT = '/dev/ttyAMA0' # Serial port to read GPS string from.
 BAUD = 9600 # Baud rate for the GPS chip.
-PATH = '../data/gps.txt'
+PATH = '/home/pi/skyrise/data/gps.txt'
 
 lat = 0
 lon = 0
@@ -83,8 +83,8 @@ def finishGPS():
 		s += str(alt)
 		
 		# Write the latest GPS data to gps.txt.
+		f = open(PATH, "w")
 		try:
-			f = open(PATH, "w")
 			f.write(s)
 		except:
 			print "Error with opening or writing to GPS file."
