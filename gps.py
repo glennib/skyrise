@@ -29,9 +29,9 @@ def processGGA(inp):
 	elif inp[3] != 'N':
 		print "ERROR: Neither north or south??"
 
-	buf = inp[4][:2]
+	buf = inp[4][:3]
 	lon = float(buf)
-	buf = inp[4][:2]
+	buf = inp[4][:3]
 	lon += float(buf) / 60
 	if inp[5] == 'W':
 		lon *= -1
