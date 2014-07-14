@@ -4,10 +4,13 @@ import serial
 lat = 0
 lon = 0
 alt = 0
+gpstime = ""
+
 good = False # This contains whether the last GPS read contained good information.
 
 # Each one of the process functions is to parse the different types of strings that come from the chip.
 
+# GPRMC - Recommended minimum specific GPS/Transit data
 def processRMC(inp):
 	# We use the third ([2]) entry of RMC to determine if the data coming from the GPS chip is legit.
 	if inp[2] == 'V':
@@ -17,11 +20,15 @@ def processRMC(inp):
 	else:
 		print "ERROR: unknown data status"
 
+# GPVTG - Track made good and ground speed
 def processVTG(inp):
 	return
 
+# GPGGA - Global Positioning System Fix Data
 def processGGA(inp):
-	global lat, lon, alt # Grants access to the global variables.
+	global lat, lon, alt, gpstime # Grants access to the global variables.
+
+	gpstime = inp[1] # Store time.
 
 	buf = inp[2][:2] # The two first digits of the latitude is degrees.
 	lat = float(buf) # Turn it into a number.
@@ -48,14 +55,35 @@ def processGGA(inp):
 	print "Lon:", lon
 	print "Alt:", alt
 
+# GPGSA - GPS DOP and active satellites
 def processGSA(inp):
 	return
 
+# GPGSV - GPS Satellites in view
 def processGSV(inp):
 	return
 
+# GPGLL - Geographic position, latitude / longitude
 def processGLL(inp):
 	return
+
+# This function processes the read data once finished.
+def finishGPS():
+	# Creating a string containing gps information.
+	s = gpstime + ','
+	s += str(lat) + ','
+	s += str(lon) + ','
+	s += str(alt)
+
+	# Write the latest GPS data to gps.txt.
+	try:
+		f = open("/bin/data/gps.txt", "w")
+		f.write(s)
+	except:
+		print "Error with opening or writing to GPS file."
+	finally:
+		f.close()
+
 
 # This takes a finished line from the chip, and determines which function to parse it through.
 def processGPS(inp):
