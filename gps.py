@@ -15,25 +15,40 @@ def processRMC(inp):
 		print "ERROR: unknown data status"
 
 def processVTG(inp):
-	time.sleep(0)
+	return
 
 def processGGA(inp):
 	global lat, lon, alt
-	buf = inp[1][:2]
+
+	buf = inp[2][:2]
 	lat = float(buf)
-	buf = inp[1][2:]
+	buf = inp[2][2:]
 	lat += float(buf) / 60
 	if inp[3] == 'S':
-		buf *= -1;
+		lat *= -1
 	elif inp[3] != 'N':
 		print "ERROR: Neither north or south??"
-	print lat
+
+	buf = inp[4][:2]
+	lon = float(buf)
+	buf = inp[4][:2]
+	lon += float(buf) / 60
+	if inp[5] == 'W':
+		lon *= -1
+	elif inp[5] != 'E'
+		print "ERROR: Neither east or west??"
+
+	alt = float(buf[9])
+
+	print "Lat:", lat
+	print "Lon:", lon
+	print "Alt:", alt
 
 def processGSA(inp):
-	time.sleep(0)
+	return
 
 def processGSV(inp):
-	time.sleep(0)
+	return
 
 def processGLL(inp):
 	return
