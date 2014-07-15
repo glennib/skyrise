@@ -12,6 +12,8 @@ good = False # This contains whether the last GPS read contained good informatio
 
 # GPRMC - Recommended minimum specific GPS/Transit data
 def processRMC(inp):
+	global good # Grants access to global parameter good.
+
 	# We use the third ([2]) entry of RMC to determine if the data coming from the GPS chip is legit.
 	if inp[2] == 'V':
 		good = False
