@@ -1,4 +1,3 @@
-from __future__ import division
 from smbus import SMBus
 import time
 
@@ -29,23 +28,30 @@ pres = 0
 def initGY63():
 	global c1, c2, c3, c4, c5, c6
 	
-	c1 = bus.read_word_data(ADR, 0xa2)
+	c1 = bus.read_i2c_block_data(ADR, 0xa2)
 	time.sleep(0.05)
 
-	c2 = bus.read_word_data(ADR, 0xa4)
+	c2 = bus.read_i2c_block_data(ADR, 0xa4)
 	time.sleep(0.05)
 
-	c3 = bus.read_word_data(ADR, 0xa6)
+	c3 = bus.read_i2c_block_data(ADR, 0xa6)
 	time.sleep(0.05)
 
-	c4 = bus.read_word_data(ADR, 0xa8)
+	c4 = bus.read_i2c_block_data(ADR, 0xa8)
 	time.sleep(0.05)
 
-	c5 = bus.read_word_data(ADR, 0xaa)
+	c5 = bus.read_i2c_block_data(ADR, 0xaa)
 	time.sleep(0.05)
 
-	c6 = bus.read_word_data(ADR, 0xac)
+	c6 = bus.read_i2c_block_data(ADR, 0xac)
 	time.sleep(0.05)
+
+	c1 = c1[0] * 256 + c1[1]
+	c2 = c2[0] * 256 + c2[1]
+	c3 = c3[0] * 256 + c3[1]
+	c4 = c4[0] * 256 + c4[1]
+	c5 = c5[0] * 256 + c5[1]
+	c6 = c6[0] * 256 + c6[1]
 	
 	print "Initialization complete."
 	print "presSens", c1
@@ -64,22 +70,22 @@ def getGY63():
 	time.sleep(0.05)
 	
 	# get pressure
-	adcPresRead = bus.read_i2c_block_data(ADR, CMD_GET)
+	d1 = bus.read_i2c_block_data(ADR, CMD_GET)
 	time.sleep(0.05)
 
 	# calculate raw pressure data
-	d1 = adcPresRead[0] * 0x10000 + adcPresRead[1] * 0x100 + adcPresRead[2]
+	d1 = d1[0] * 65536 + d1[1] * 256 + d1[2]
 
 	# make gy63 read temp
 	bus.write_byte(ADR, CMD_READ_T)
 	time.sleep(0.05)
 
 	# get temp
-	adcTempRead = bus.read_i2c_block_data(ADR, CMD_GET)
+	d2 = bus.read_i2c_block_data(ADR, CMD_GET)
 	time.sleep(0.05)
 
 	# calculate raw temperature data
-	d2 = adcTempRead[0] * 0x10000 + adcTempRead[1] * 0x100 + adcTempRead[2]
+	d2 = d2[0] * 65536 + d2[1] * 256 + d2[2]
 
 	dT = d2 - c5 * 2**8
 	off = c2 * 2**17 + dT * c4 / 2**6
