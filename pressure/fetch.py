@@ -68,7 +68,7 @@ def getGY63():
 	time.sleep(0.05)
 
 	# calculate raw pressure data
-	rawPres = adcPresRead[0] * 0x10000 + adcPresRead[1] * 0x100 + adcPresRead[2]
+	d1 = adcPresRead[0] * 0x10000 + adcPresRead[1] * 0x100 + adcPresRead[2]
 
 	# make gy63 read temp
 	bus.write_byte(ADR, CMD_READ_T)
@@ -79,14 +79,14 @@ def getGY63():
 	time.sleep(0.05)
 
 	# calculate raw temperature data
-	rawTemp = adcTempRead[0] * 0x10000 + adcTempRead[1] * 0x100 + adcTempRead[2]
+	d2 = adcTempRead[0] * 0x10000 + adcTempRead[1] * 0x100 + adcTempRead[2]
 
-	dT = rawTemp - c5 * 2**8
+	dT = d2 - c5 * 2**8
 	off = c2 * 2**17 + dT * c4 / 2**6
 	sens = c1 * 2**16 + dT * c3 / 2**7
 
-	temp = (2000 + dT * c6 / 2**23) / 100
-	pres = (rawPres * sens / 2**21 - off) / 2**15 / 100
+	temp = (2000 + (dT * c6) / 2**23) / 100
+	pres = (((d1 * sens) / 2**21 - off) / 2**15) / 100
 
 initGY63()
 
