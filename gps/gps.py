@@ -3,7 +3,7 @@ import serial
 
 PORT = '/dev/ttyAMA0' # Serial port to read GPS string from.
 BAUD = 9600 # Baud rate for the GPS chip.
-PATH = 'bin/data/gps.txt'
+PATH = '../data/gps.txt'
 
 lat = 0
 lon = 0
