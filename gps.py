@@ -1,6 +1,10 @@
 import time
 import serial
 
+PORT = '/dev/ttyAMA0' # Serial port to read GPS string from.
+BAUD = 9600 # Baud rate for the GPS chip.
+PATH = 'bin/data/gps.txt'
+
 lat = 0
 lon = 0
 alt = 0
@@ -71,20 +75,23 @@ def processGLL(inp):
 
 # This function processes the read data once finished.
 def finishGPS():
-	# Creating a string containing gps information.
-	s = gpstime + ','
-	s += str(lat) + ','
-	s += str(lon) + ','
-	s += str(alt)
-
-	# Write the latest GPS data to gps.txt.
-	try:
-		f = open("/bin/data/gps.txt", "w")
-		f.write(s)
-	except:
-		print "Error with opening or writing to GPS file."
-	finally:
-		f.close()
+	if good:
+		# Creating a string containing gps information.
+		s = gpstime + ','
+		s += str(lat) + ','
+		s += str(lon) + ','
+		s += str(alt)
+		
+		# Write the latest GPS data to gps.txt.
+		try:
+			f = open(PATH, "w")
+			f.write(s)
+		except:
+			print "Error with opening or writing to GPS file."
+		finally:
+			f.close()
+	else:
+		print "No good data from last read."
 
 
 # This takes a finished line from the chip, and determines which function to parse it through.
@@ -104,7 +111,7 @@ def processGPS(inp):
 	elif arr[0] == "$GPGGA":
 		if good: # The good variable must be True to parse the GGA-string.
 			processGGA(arr)
-			finishGPS() # after GGA is parsed, we have the info we need. finishGPS handles what happens after that.
+		finishGPS() # after GGA is parsed, we have the info we need. finishGPS handles what happens after that.
 	elif arr[0] == "$GPGSA":
 		processGSA(arr)
 	elif arr[0] == "$GPGSV":
@@ -115,8 +122,7 @@ def processGPS(inp):
 		print "ERROR. Unknown message from GPS:", inp
 
 
-PORT = '/dev/ttyAMA0' # Serial port to read GPS string from.
-BAUD = 9600 # Baud rate for the GPS chip.
+
 
 s = serial.Serial(PORT, BAUD, timeout=1) # Open serial port.
 
