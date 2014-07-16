@@ -37,7 +37,7 @@ def gatherAccelerometer():
     try:
       f.write(string)
     except:
-      return
+      pass
     finally:
       f.close()
   except:

@@ -62,9 +62,12 @@ def readAccelerometer():
 	except:
 		pass
 	li = s.rsplit(',')
-	accX = li[0]
-	accY = li[1]
-	accZ = li[2]
+	try:
+		accX = li[0]
+		accY = li[1]
+		accZ = li[2]
+	except:
+		pass
 
 while True:
 	readBarometer()
