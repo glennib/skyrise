@@ -24,21 +24,7 @@ class hmc5883l:
         8.10: [7, 4.35],
     }
 
-    def __init__(self, port=1, address=0x1E, gauss=1.3, declination=(0,0)):
-        self.bus = smbus.SMBus(port)
-        self.address = address
-
-        (degrees, minutes) = declination
-        self.__declDegrees = degrees
-        self.__declMinutes = minutes
-        self.__declination = (degrees + minutes / 60) * math.pi / 180
-
-        (reg, self.__scale) = self.__scales[gauss]
-        self.bus.write_byte_data(self.address, 0x00, 0x70) # 8 Average, 15 Hz, normal measurement
-        self.bus.write_byte_data(self.address, 0x01, reg << 5) # Scale
-        self.bus.write_byte_data(self.address, 0x02, 0x00) # Continuous measurement
-
-    def __init__(self, bus, port=1, address=0x1E, gauss=1.3, declination=(0,0)):
+    def __init__(self, bus, address=0x1E, gauss=1.3, declination=(0,0)):
         self.bus = bus
         self.address = address
 
