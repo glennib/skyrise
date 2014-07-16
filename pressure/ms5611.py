@@ -7,7 +7,7 @@ class ms5611:
 	READ_TEMP = 0x58
 	CAL_CONST = 0xA0
 	GET_READ  = 0x00
-	SLEEP_TIME = 0.015
+	SLEEP_TIME = 0.0083
 	
 	C = [0, 0, 0, 0, 0, 0, 0]
 	D = [0, 0, 0]
