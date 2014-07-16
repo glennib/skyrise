@@ -7,6 +7,7 @@ bus = smbus.SMBus(1)
 sensor = ms5611(bus)
 
 while True:
+	x = sensor.read()
 	print chr(27) + "[2J"
-	print sensor.read()
+	print x
 	time.sleep(0.5)

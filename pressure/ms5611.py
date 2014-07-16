@@ -18,37 +18,37 @@ class ms5611:
 		
 		# This block reads the calibration constants.
 		for i in range(1, 7):
-			C[i] = bus.read_i2c_block_data(self.address, self.CAL_CONST + 2*i)
-			C[i] = C[i][0] * 256 + C[i][1]
+			self.C[i] = self.bus.read_i2c_block_data(self.address, self.CAL_CONST + 2*i)
+			self.C[i] = self.C[i][0] * 256 + self.C[i][1]
 	
-	def read():
+	def read(self):
 		# Read pressure into chip
-		bus.write_byte(self.address, self.READ_PRES)
+		self.bus.write_byte(self.address, self.READ_PRES)
 		time.sleep(self.SLEEP_TIME)
 	
 		# Read pressure from chip
-		D[1] = bus.read_i2c_block_data(self.address, self.GET_READ)
+		self.D[1] = self.bus.read_i2c_block_data(self.address, self.GET_READ)
 		time.sleep(self.SLEEP_TIME)
 		# Calculate raw data
-		D[1] = D[1][0] * 65536 + D[1][1] * 256.0 + D[1][2]
+		self.D[1] = self.D[1][0] * 65536 + self.D[1][1] * 256.0 + self.D[1][2]
 		
 		# Read temperature into chip
-		bus.write_byte(self.address, self.READ_TEMP)
+		self.bus.write_byte(self.address, self.READ_TEMP)
 		time.sleep(self.SLEEP_TIME)
 		
 		# Read temperature from chip
-		D[2] = bus.read_i2c_block_data(self.address, self.GET_READ)
+		self.D[2] = self.bus.read_i2c_block_data(self.address, self.GET_READ)
 
 		# Calculate raw data
-		D[2] = D[2][0] * 65536 + D[2][1] * 256.0 + D[2][2]
+		self.D[2] = self.D[2][0] * 65536 + self.D[2][1] * 256.0 + self.D[2][2]
 		
 
 		# Perform calculations
-		dT = D[2] - C[5] * 2**8
-		OFF = C[2] * 2**16 + dT * C[4] / 2**7
-		SENS = C[1] * 2**15 + dT * C[3] / 2**8
+		dT = self.D[2] - self.C[5] * 2**8
+		OFF = self.C[2] * 2**16 + dT * self.C[4] / 2**7
+		SENS = self.C[1] * 2**15 + dT * self.C[3] / 2**8
 		
-		temp = (2000 + (dT * C[6]) / 2**23) / 100
-		pres = (((D[1] * SENS) / 2**21 - OFF) / 2**15) / 100
+		temp = (2000 + (dT * self.C[6]) / 2**23) / 100
+		pres = (((self.D[1] * SENS) / 2**21 - OFF) / 2**15) / 100
 		
 		return (pres, temp)
