@@ -45,5 +45,12 @@ s.write(key)
 
 print "Reading..."
 
-while True:
-	print s.read()
+
+a = ""
+
+t = time.time()
+
+while time.time() - t < 3.0:
+	a += s.read()
+
+print a
