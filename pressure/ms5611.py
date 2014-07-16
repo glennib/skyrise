@@ -12,7 +12,7 @@ class ms5611:
 	C = [0, 0, 0, 0, 0, 0, 0]
 	D = [0, 0, 0]
 	
-	def __init__(self, bus, address=0x77):
+	def __init__(self, bus, address=0x76):
 		self.bus = bus
 		self.address = address
 		

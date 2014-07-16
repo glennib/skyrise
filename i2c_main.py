@@ -1,5 +1,5 @@
 import multisensor.adxl345 as adxl345
-import multisensor.hmc5663l as hmc5663l
+import multisensor.hmc5883l as hmc5883l
 import pressure.ms5611 as ms5611
 import time
 import smbus
@@ -17,11 +17,11 @@ BAROMETER_TIMEOUT = 1.000
 
 # A timestamp on the last reading, set asynchronous.
 accelerometer_stamp = time.time()
-compass_stamp = acc_stamp + 0.5
-barometer_stamp = acc_stamp + 0.05
+compass_stamp = accelerometer_stamp + 0.5
+barometer_stamp = accelerometer_stamp + 0.05
 
 # Open the bus.
-bus = SMBus(1)
+bus = smbus.SMBus(1)
 
 # Initialize each of the sensors, the bus we created is sent to the objects.
 accelerometer = adxl345.adxl345(bus)
@@ -46,7 +46,7 @@ def gatherAccelerometer():
 # Method for gathering data from the compass.
 def gatherCompass():
   heading = compass.heading()
-  string = "{0:.1f}".format(heading
+  string = "{0:.1f}".format(heading)
   try:
     f = open(DATAPATH + COMPASS_FILE, "w")
     try:
@@ -61,7 +61,7 @@ def gatherCompass():
 # Method for gathering data from the barometer.
 def gatherBarometer():
   (pressure, temperature) = barometer.read()
-  string = "{0:.2f},{1:.1f},{2:.4f}".format(pressure, temperature)
+  string = "{0:.0f},{1:.1f}".format(pressure, temperature)
   try:
     f = open(DATAPATH + BAROMETER_FILE, "w")
     try:
