@@ -1,3 +1,6 @@
+# This script reads data from the sensors that are hooked up to the I2C bus.
+# The data is written to different files within the data-folder.
+
 import multisensor.adxl345 as adxl345
 import multisensor.hmc5883l as hmc5883l
 import pressure.ms5611 as ms5611

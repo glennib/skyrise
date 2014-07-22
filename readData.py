@@ -1,3 +1,6 @@
+# This script reads the data from the files in the data-folder, and prints it directly to the terminal.
+# Not to be used in launch, just to display the sensor data.
+
 import time
 
 DATAPATH = '/home/pi/skyrise/data/'
