@@ -2,4 +2,5 @@
 *.py~
 *.pyo
 data/*
+web/config.php
 
