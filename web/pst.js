@@ -1,17 +1,24 @@
 window.onload  = initSite;
-var map = null;
+var map = null; // For map
+var chart = null; // For chart
 var pins = {};
 var infoWindow = {};
 
 // Initialize site
 function initSite() {
 
-	console.log('init');
 	var element =  document.getElementById('map-canvas');
 	if (typeof(element) != 'undefined' && element != null)
 	{
 	  // Map exists.
 	  gmLoadScript();
+	}
+	
+	var element =  document.getElementById('chart-canvas');
+	if (typeof(element) != 'undefined' && element != null)
+	{
+	  // Graph exists.
+	  gcLoadScript();
 	}
 	
 }
@@ -158,4 +165,37 @@ function gmInitialize() {
   });
   
   flightPath.setMap(map);
+}
+
+//
+// // Google Charts
+//
+
+function gcLoadScript() {
+  // Load chart
+  var options = {packages: ['corechart'], callback : gcDrawChart};
+  google.load('visualization', '1.0', options);  
+}
+
+function gcDrawChart() {
+
+  // Create the data table.
+  var data = new google.visualization.DataTable();
+  data.addColumn('datetime', 'Time');
+  data.addColumn('number', 'Altitude');
+  
+  // Add each row
+  for (i = 0; i < psttimes.length; i++) { 
+	data.addRow([new Date(psttimes[i]), pstalts[i]]);
+  }
+
+  // Set chart options
+  var options = {'title':'Altitude',
+                 'width':600,
+                 'height':400};
+
+  // Instantiate and draw our chart, passing in some options.
+  chart = new google.visualization.LineChart(document.getElementById('chart-canvas'));
+  chart.draw(data, options);
+  
 }

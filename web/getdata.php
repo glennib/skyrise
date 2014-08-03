@@ -38,7 +38,7 @@ function pst_get_latest() {
 	return $latest;
 }
 // get array of all lat/lon coordinates
-function pst_get_path( &$lat, &$lon ) {
+function pst_load_vars() {
 
 	global $pstconfig;
 
@@ -53,25 +53,47 @@ function pst_get_path( &$lat, &$lon ) {
 	  
 	//get latest input id
 	//execute the SQL query and return records
-	$result = mysql_query("SELECT lat, lon FROM " . $pstconfig['dbtable'] );
+	$result = mysql_query("SELECT lat, lon, alt, time FROM " . $pstconfig['dbtable'] );
 	
+	//
+	/// Add strings for lat/lon
+	//
 	
-	// Arrays
-	$lat = [];
-	$lon = [];
+	// Strings
+	$times = "var psttimes = [ ";
+	$lats = "var pstlats = [ ";
+	$lons = "var pstlons = [ ";
+	$alts = "var pstalts = [ ";
 	
 	while ($row = mysql_fetch_array($result)) {
-		// Add values to arrays
-		$lat[] = $row['lat'];
-		$lon[] = $row['lon'];
+		// Add values
+		$times .= "'".$row['time'] . "',";
+		$lats .= $row['lat'] . ",";
+		$lons .= $row['lon'] . ",";
+		$alts .= $row['alt'] . ",";
 	}
+	
+	// N
+	$times .= "];\n";
+	$lats .= "];\n";
+	$lons .= "];\n";
+	$alts .= "];\n";
+?>
+
+	<script type="text/javascript">
+		<?php echo $lats; ?>
+		<?php echo $lons; ?>
+		<?php echo $alts; ?>
+		<?php echo $times; ?>
+	</script>
+	
+<?php
 	
 	//close the connection
 	mysql_close($dbhandle);
 	
 	//return the latest data
 	return;
-	
 
 }
 ?>

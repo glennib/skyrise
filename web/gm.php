@@ -24,7 +24,7 @@ function pst_display_google_maps() {
 /*		Getting google maps variables											*/
 /*------------------------------------------------------------------------------*/
 
-function pst_gmaps_vars($latest, $lats, $lons) {
+function pst_gmaps_vars($latest) {
 
 	// Start generating codestring
 	$codestring = "var sites = {};\n";
@@ -71,22 +71,6 @@ function pst_gmaps_vars($latest, $lats, $lons) {
 	// End structure
 	$codestring .= "};\n";
 	
-	//
-	/// Add array for lat/lon
-	//
-	
-	$codestring .= "var pstlats = [ ";
-	for ($i = 0; $i <= count($lats) - 1;$i++) {
-		$codestring .= $lats[$i] . ",";
-	}
-	$codestring .= " ]; \n";
-	
-	$codestring .= "var pstlons = [ ";
-	for ($i = 0; $i <= count($lons) - 1;$i++) {
-		$codestring .= $lons[$i] . ",";
-	}
-	$codestring .= " ]; \n";
-
 	?>
 	<script type="text/javascript">
 		<?php echo $codestring; ?>

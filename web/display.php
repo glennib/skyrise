@@ -1,52 +1,13 @@
 <?php
-/*
-	Kristoffer Lorentsen for Project Skyrise Telemark 2014
-	
-	For displaying data in realtime on the web during launch.
+/* Display methods for PST plugin */
 
-	
-
-*/
-// Include config file and variables
-include_once('config.php');
-
-// Include getdata functions/script
-include_once('getdata.php');
-
-// Google maps related code
-include_once('gm.php');
-
-
-// Get variables from db
-$latest = pst_get_latest();
-pst_get_path($lat,$lon);
 
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-	<title>PST</title>
-	
-	<!-- Google maps variables -->
-	<?php pst_gmaps_vars($latest, $lat, $lon) ?>
-	
-	
-	<style>
-			html, body {
-				height: 100%;
-			}
-			#map_canvas {
-				width: 500px;
-				height: 400px;
-			}
-    </style>
-</head>
-<body>
+<?php function pst_display_latest(){ 
+	$latest = pst_get_latest();
+?>
 
-	<h1>pst</h1>
-
-	<div id="map-canvas" style="width:500px; height:400px"></div>
 	<h2>Latest data at <?php echo $latest['time']; ?></h2>
 	<ul>
 		<li>Altitude: <?php echo $latest['alt']; ?> m</li>
@@ -63,10 +24,18 @@ pst_get_path($lat,$lon);
 		<li>Spin: <?php echo $latest['spin']; ?> deg/s</li>
 		<li>Voltage: <?php echo $latest['voltage']; ?> V</li>
 	</ul>
-
 	
+<?php }; //end pst_display_latest?>
 
-	<!-- Custom javascript -->
-	<script src="pst.js"></script>
-</body>
-</html>
+<?php
+function pst_display_gm(){ ?>
+	<div id="map-canvas" style="width:500px; height:400px"></div>
+<?php
+};
+
+function pst_display_gc(){ ?>
+	<div id="chart-canvas" style="width:600; height:400"></div>
+<?php
+};
+
+?>
