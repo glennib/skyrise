@@ -1,13 +1,10 @@
 <?php
 /* Display methods for PST plugin */
 
-
-?>
-
-<?php function pst_display_latest(){ 
+function pst_display_latest(){ 
 	$latest = pst_get_latest();
-?>
 
+?>
 	<h2>Latest data at <?php echo $latest['time']; ?></h2>
 	<ul>
 		<li>Altitude: <?php echo $latest['alt']; ?> m</li>
@@ -25,17 +22,14 @@
 		<li>Voltage: <?php echo $latest['voltage']; ?> V</li>
 	</ul>
 	
-<?php }; //end pst_display_latest?>
+<?php }; //end pst_display_latest
 
-<?php
-function pst_display_gm(){ ?>
-	<div id="map-canvas" style="width:500px; height:400px"></div>
-<?php
+function pst_display_gm(){
+	return '<div id="map-canvas" style="width:642px; height:400px"></div>';
 };
 
-function pst_display_gc(){ ?>
-	<div id="chart-canvas" style="width:600; height:400"></div>
-<?php
+function pst_display_gc(){
+	return'<div id="chart-canvas" style="width:642; height:400"></div>';
 };
 
 ?>

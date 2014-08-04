@@ -53,7 +53,7 @@ function pst_load_vars() {
 	  
 	//get latest input id
 	//execute the SQL query and return records
-	$result = mysql_query("SELECT lat, lon, alt, time FROM " . $pstconfig['dbtable'] );
+	$result = mysql_query("SELECT lat, lon, alt, time, tempout FROM " . $pstconfig['dbtable'] );
 	
 	//
 	/// Add strings for lat/lon
@@ -64,6 +64,7 @@ function pst_load_vars() {
 	$lats = "var pstlats = [ ";
 	$lons = "var pstlons = [ ";
 	$alts = "var pstalts = [ ";
+	$tempouts = "var psttempouts = [ ";
 	
 	while ($row = mysql_fetch_array($result)) {
 		// Add values
@@ -71,6 +72,7 @@ function pst_load_vars() {
 		$lats .= $row['lat'] . ",";
 		$lons .= $row['lon'] . ",";
 		$alts .= $row['alt'] . ",";
+		$tempouts .= $row['tempout'] . ",";
 	}
 	
 	// N
@@ -78,12 +80,14 @@ function pst_load_vars() {
 	$lats .= "];\n";
 	$lons .= "];\n";
 	$alts .= "];\n";
+	$tempouts .= "];\n";
 ?>
 
 	<script type="text/javascript">
 		<?php echo $lats; ?>
 		<?php echo $lons; ?>
 		<?php echo $alts; ?>
+		<?php echo $tempouts; ?>
 		<?php echo $times; ?>
 	</script>
 	
@@ -95,5 +99,5 @@ function pst_load_vars() {
 	//return the latest data
 	return;
 
-}
+};
 ?>

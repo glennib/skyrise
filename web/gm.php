@@ -77,4 +77,4 @@ function pst_gmaps_vars($latest) {
 	</script>
 
 	<?php
-}
+}; ?>

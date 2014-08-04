@@ -21,20 +21,39 @@ include_once('gm.php');
 // Display functions
 include_once('display.php');
 
-// Sqripts
-wp_enqueue_script('pstcustom', plugins_url('/pst/pst.js'__FILE__));
-wp_enqueue_script('gcharts', '//www.google.com/jsapi'__FILE__,array(),'1.0',true);
+// Register scripts
+wp_register_script('pstcustom', '/wp-content/plugins/pst/pst.js',array(),'0.1',true);
+wp_register_script('gcharts', '//www.google.com/jsapi',array(),'1.0',true);
 
-// Shortcode for display
 
-function pstlive_display( $atts ){
-	echo"TESTETESTETET";
-	return;
-}
-add_shortcode( 'pstlive', 'pstlive_display' );
-?>
-	<!-- Google maps variables -->
-	<?php //pst_gmaps_vars(pst_get_latest()); ?>
+// Output data into js vars
+function pst_js_data() {
+
+    pst_gmaps_vars(pst_get_latest()); // latest data
+	pst_load_vars(); // all data
 	
-	<!-- All variables JS output -->
-	<?php //pst_load_vars(); ?> 
+}
+
+//
+/// Shortcode for displaying live-track data
+//
+function pstlive_display( $atts ){
+	// enqueue scripts
+	wp_enqueue_script('pstcustom');
+	wp_enqueue_script('gcharts');
+	
+	// Add javascript data areas
+	add_action('wp_footer', 'pst_js_data');
+	
+	// Build html
+	$html = pst_display_gm()."\n";
+	$html .= pst_display_gc()."\n";
+	
+	// Add buttons
+	$html .= '<a id="button1">Altitude</a>'."\n";
+	$html .= '<a id="button2">TempOut</a>'."\n";
+
+	return $html;
+}
+
+add_shortcode( 'pstlive', 'pstlive_display' );

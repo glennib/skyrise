@@ -1,8 +1,12 @@
 window.onload  = initSite;
 var map = null; // For map
 var chart = null; // For chart
+var dataview = null; // data overlay for charts
+var data = null; // data for chart
 var pins = {};
 var infoWindow = {};
+var button = {};
+
 
 // Initialize site
 function initSite() {
@@ -38,9 +42,9 @@ function gmLoadScript() {
 
 function gmInitialize() {
 
-  var zoomlevel = 4;
-  var initLat = 68.05660;
-  var initLon = -1;
+  var zoomlevel = 6;
+  var initLat = 59.325;
+  var initLon = 8.67;
 
 
   // Set map options
@@ -69,50 +73,14 @@ function gmInitialize() {
   map = new google.maps.Map(document.getElementById('map-canvas'),	mapOptions);
   
   // Define styling
-  var styling = [
-  	{
-		"featureType": "landscape",
-		"stylers": 
-			[ 
-			{ "color": "#B1132F" }
-			] 
-	},
-	{	
-		"featureType": "water",
-		"stylers": 
-			[ 
-			{ "color": "#850E23" }
-			] 
-		
-	},
-	{ 	
-		"featureType": "poi", 
-		"stylers":
-			[ 
-			{ "visibility": "off" },
-			/* {"color": "#b1132f" },
-			{ "saturation": 56 },
-			{ "lightness": -14} */ 
-			]
-	},
-	{ 	
-		"featureType": "transit.station.airport",
-		"stylers":
-			[
-			{ "color": "#ff8c89" },
-			{ "gamma": 0.33 },
-			{ "lightness": -1 },
-			{ "saturation": -19 }
-			]
-	},
-  ]
+  var styling = [];
   
   // Set styling
   map.setOptions({styles: styling});
   
   
   // Define markers and circles based on data
-  var pinImage = 'pin.png';
+  var pinImage = '//skyrise.hit.no/wp-content/plugins/pst/pin.png';
   
   var i = 0;
   for (var site in sites) {
@@ -180,22 +148,48 @@ function gcLoadScript() {
 function gcDrawChart() {
 
   // Create the data table.
-  var data = new google.visualization.DataTable();
+  data = new google.visualization.DataTable();
   data.addColumn('datetime', 'Time');
   data.addColumn('number', 'Altitude');
+  data.addColumn('number', 'TempOut');
   
   // Add each row
   for (i = 0; i < psttimes.length; i++) { 
-	data.addRow([new Date(psttimes[i]), pstalts[i]]);
+	data.addRow([new Date(psttimes[i]), pstalts[i], psttempouts[i]]);
   }
 
+  
+  // DataView
+  dataview = new google.visualization.DataView(data)
+  dataview.setColumns([0,1]);
+  
   // Set chart options
   var options = {'title':'Altitude',
-                 'width':600,
-                 'height':400};
+                 'width':642,
+                 'height':400,
+				 animation: {
+                     duration: 1000,
+                     easing: 'out',
+                 }
+	  };
 
   // Instantiate and draw our chart, passing in some options.
   chart = new google.visualization.LineChart(document.getElementById('chart-canvas'));
-  chart.draw(data, options);
+  
+  chart.draw(dataview, options);
+  
+  // Buttons for changing values
+  button[1] = document.getElementById('button1');
+  button[1].onclick = function() {
+    dataview.setColumns([0,1]);
+    chart.draw(dataview, options);
+  }
+  
+  button[2] = document.getElementById('button2');
+  button[2].onclick = function() {
+    dataview.setColumns([0,2]);
+    chart.draw(dataview, options);
+  }
   
 }
+
