@@ -1,4 +1,6 @@
 
+
+
 /*
   Telemetry Reader and Sender
   
@@ -21,12 +23,26 @@
   
 */
 
-#include <HTU21D.h>
+#include "HTU21D.h"
+#include "ADXL345.h"
+#include "MS561101BA.h"
+#include "HMC58X3.h"
+#include <Wire.h>
 
 const char START_OF_MESSAGE = '$';
 const char end_of_message = '\n';
 
+HMC58X3 _magnetometer;
 
 void setup() {
   Serial.begin(9600);
+  Wire.begin();
+  
+  _magnetometer.init(false);
+  _magnetometer.calibrate(1, 32);
+  _magnetometer.setMode(0);
+}
+
+void loop() {
+  handleSerial();
 }
