@@ -5,15 +5,20 @@
 */
 
 
-void writeTelemetry() {  
+void writeTelemetry(String telemetry) {  
   File dataFile = SD.open(FILE, FILE_WRITE);
   
   if (dataFile) {
-    dataFile.println(_currentIndata);
+    dataFile.print(telemetry);
     dataFile.close();
-    Serial.println(_currentIndata);
+    Serial.print(telemetry);
   }
   else {
     Serial.println("error opening " FILE);
   }
+}
+
+void debug(String str) {
+  Serial.println(str);
+  ;
 }
