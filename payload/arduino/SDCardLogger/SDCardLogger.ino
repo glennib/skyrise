@@ -16,6 +16,7 @@
 #include <SD.h>
 
 #define FILE "datalog.txt"
+#define DELAY 10
 
 const int chipSelect = 10;
 
@@ -60,5 +61,6 @@ void setup() {
 
 void loop() {
   handleSerial();
+  delay(DELAY);
 }
 
