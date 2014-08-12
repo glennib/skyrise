@@ -35,7 +35,7 @@ void processCurString() { // is only entered if the current transmit is complete
           debug("Stop less than start");
         }
         else { // all is good
-          String telemetry = _curString.substring(posStart + 1, posStop - posStart);
+          String telemetry = _curString.substring(posStart + 1, posStop - posStart + 1);
           _curString = _curString.substring(posStop + 1);
           writeTelemetry(telemetry);
         }

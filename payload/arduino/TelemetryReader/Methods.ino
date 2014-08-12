@@ -1,3 +1,9 @@
+/*
+
+  Methods that are used by the main program.
+
+*/
+
 void debug(String str) {
   Serial.println(str);
   ;

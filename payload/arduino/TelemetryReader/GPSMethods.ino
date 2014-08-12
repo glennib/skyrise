@@ -1,5 +1,10 @@
+/*
 
-#define SERIAL_DELAY 10
+  GPS methods that are used by the main program.
+
+*/
+
+#define SERIAL_DELAY 5
 #define GPS_CHAR '$'
 
 String _curString = "";
@@ -35,7 +40,7 @@ void processGPSString(String gpsString) {
   String name = gpsString.substring(0, 6);
   if (name == "$GPRMC") {
     processRMC(gpsString);
-    _timestampGps = millis();
+    //_timestampGps = millis();
   }
   else if (name == "$GPVTG") {
     ;
