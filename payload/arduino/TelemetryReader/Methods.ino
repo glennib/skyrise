@@ -1,9 +1,8 @@
+void debug(String str) {
+  Serial.println(str);
+  ;
+}
 
-
-// Handles serial for GPS
-void handleSerial() {
-  String indata = "";
-  while (Serial.available()) {
-    
-  }
+void debug(char c) {
+  debug((String)c);
 }
