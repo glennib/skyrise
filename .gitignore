@@ -3,4 +3,5 @@
 *.pyo
 data/*
 web/config.php
+web/sftp-config.json
 
