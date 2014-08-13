@@ -1,4 +1,3 @@
-
 /*
   Telemetry Reader and Sender
  
@@ -26,10 +25,14 @@
 #include <HMC58X3.h>
 #include <ADXL345.h>
 #include <MS561101BA.h>
+//#include <SoftwareSerial.h>
 
 const char START_OF_MESSAGE = '$';
 const char END_OF_MESSAGE = '\n';
 const int GPS_PIN = 4;
+
+// Software Serial
+//SoftwareSerial _serial(7, 8); // RX 7, TX 8, calls for interrupt 4?
 
 // I2C equipment
 MS561101BA _barometer = MS561101BA();
@@ -74,10 +77,14 @@ void setup() {
   _magnetometer.setMode(0);
   _humiditySensor.begin();
 
+  // Serial Setup
   Serial.begin(9600);
   Serial1.begin(9600);
+  //_serial.begin(4800);
 
+  // IO setup
   pinMode(GPS_PIN, OUTPUT);
+  digitalWrite(GPS_PIN, LOW);
 }
 
 void loop() {
@@ -93,6 +100,17 @@ void loop() {
     // handle string
     char charBuf[12];
     String telemetry = (String) START_OF_MESSAGE;
+    // GPS
+    telemetry += _gpstime; // time
+    telemetry += ',';
+    dtostrf(_lat, 4, 7, charBuf); // lat
+    telemetry += charBuf;
+    telemetry += ',';
+    dtostrf(_lon, 4, 7, charBuf); // lon
+    telemetry += charBuf;
+    telemetry += ',';
+    telemetry += int(_alt); // alt
+    telemetry += ',';
     // acceleration
     dtostrf(_accX, 3, 2, charBuf);
     telemetry += charBuf;
@@ -129,6 +147,14 @@ void loop() {
     Serial.print(telemetry);
     Serial1.print(telemetry);
   }
+  
+  if (_gpsGood) {
+    digitalWrite(GPS_PIN, HIGH);
+  }
+  else {
+    digitalWrite(GPS_PIN, LOW);
+  }
+  
   delay(DELAY);
 }
 
@@ -136,15 +162,7 @@ void loop() {
 /*
      char charBuf[50];
  String telemetry = (String) START_OF_MESSAGE;
- telemetry += _gpstime; // time
- telemetry += ',';
- dtostrf(_lat, 4, 10, charBuf); // lat
- telemetry += charBuf;
- telemetry += ',';
- dtostrf(_lon, 4, 10, charBuf); // lon
- telemetry += charBuf;
- telemetry += ',';
- telemetry += int(_alt); // alt
+ 
  */
 
 
@@ -168,4 +186,5 @@ void loop() {
  now = _timestampLED;
  }
  */
+
 
