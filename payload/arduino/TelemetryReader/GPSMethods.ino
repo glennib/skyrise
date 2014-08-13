@@ -128,9 +128,9 @@ void processGGA(String gpsString) {
         }
         break;
       case 4:
-        buf.substring(0, 2).toCharArray(charBuf, 50);
+        buf.substring(0, 3).toCharArray(charBuf, 50);
         lon = atof(charBuf);
-        buf.substring(2).toCharArray(charBuf, 50);
+        buf.substring(3).toCharArray(charBuf, 50);
         lon += atof(charBuf) / 60;
         break;
       case 5:
