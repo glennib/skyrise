@@ -4,7 +4,8 @@
 function pst_display_latest(){ 
 	$latest = pst_get_latest();
 
-?>
+	ob_start(); // For capturing echo 
+	?>
 	<h2>Latest data at <?php echo $latest['time']; ?></h2>
 	<ul>
 		<li>Altitude: <?php echo $latest['alt']; ?> m</li>
@@ -22,7 +23,10 @@ function pst_display_latest(){
 		<li>Voltage: <?php echo $latest['voltage']; ?> V</li>
 	</ul>
 	
-<?php }; //end pst_display_latest
+	<?php 
+
+	return ob_get_clean(); // Return the output
+}; //end pst_display_latest
 
 function pst_display_gm(){
 	return '<div id="map-canvas" style="width:642px; height:400px"></div>';

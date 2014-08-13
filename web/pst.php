@@ -15,9 +15,6 @@ include_once('config.php');
 // Include getdata functions/script
 include_once('getdata.php');
 
-// Google maps related code
-include_once('gm.php');
-
 // Display functions
 include_once('display.php');
 
@@ -52,6 +49,10 @@ function pstlive_display( $atts ){
 	// Add buttons
 	$html .= '<a id="button1">Altitude</a>'."\n";
 	$html .= '<a id="button2">TempOut</a>'."\n";
+	$html .= '<a id="button3">Humidity</a>'."\n";
+
+	// Add all latest data
+	$html .= pst_display_latest();
 
 	return $html;
 }
