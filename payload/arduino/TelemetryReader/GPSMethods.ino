@@ -36,7 +36,7 @@ void processCurString() { // is only entered if the current gps transmit is comp
 }
 
 void processGPSString(String gpsString) {
-  //debug("processGPSString()");
+  debug("processGPSString()");
   String name = gpsString.substring(0, 6);
   if (name == "$GPRMC") {
     processRMC(gpsString);
@@ -48,11 +48,11 @@ void processGPSString(String gpsString) {
   }
   else if (name == "$GPGGA") {
     if (_gpsGood) {
-      //debug("Got good signal");
+      debug("Got good signal");
       processGGA(gpsString);
     }
     else {
-      //debug("No good signal");
+      debug("No good signal");
     }
   }
   else if (name == "$GPGSA") {
@@ -68,13 +68,13 @@ void processGPSString(String gpsString) {
     //processGLL();
   }
   else {
-    //debug("Unknown GPS message: " + gpsString);
+    debug("Unknown GPS message: " + gpsString);
   }
 }
 
 void processRMC(String gpsString) {
   // 12 fields
-  //debug("processRMC()");
+  debug("processRMC()");
   int field = 0;
   for (int i = 0; i < gpsString.length(); i++) {
     if (gpsString[i] == ',') {
@@ -82,7 +82,7 @@ void processRMC(String gpsString) {
     }
     else {
       if (field == 2) {
-        //debug(gpsString[i]);
+        debug(gpsString[i]);
         if (gpsString[i] == 'V') {
           _gpsGood = false;
           break;
@@ -92,7 +92,7 @@ void processRMC(String gpsString) {
           break;
         }
         else {
-          ////debug("Unknown data status in GPS");
+          //debug("Unknown data status in GPS");
         }
       }
     }
@@ -100,7 +100,7 @@ void processRMC(String gpsString) {
 }
 
 void processGGA(String gpsString) {
-  //debug("processGGA()");
+  debug("processGGA()");
   float lat = 0.0, lon = 0.0;
   int alt;
   String gpstime = "";
@@ -124,7 +124,7 @@ void processGGA(String gpsString) {
           lat *= -1;
         }
         else if(buf != "N") {
-          //debug("Neither north or south?" + gpsString);
+          debug("Neither north or south?" + gpsString);
         }
         break;
       case 4:
@@ -138,7 +138,7 @@ void processGGA(String gpsString) {
           lon *= -1;
         }
         else if(buf != "E") {
-          //debug("Neither west or east??" + gpsString);
+          debug("Neither west or east??" + gpsString);
         }
         break;
       case 9:
