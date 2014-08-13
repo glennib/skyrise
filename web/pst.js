@@ -3,9 +3,11 @@ var map = null; // For map
 var chart = null; // For chart
 var dataview = null; // data overlay for charts
 var data = null; // data for chart
+var newdata = null; // data for chart
 var pins = {};
 var infoWindow = {};
 var button = {};
+var pullDataUrl = 'http://skyrise.hit.no/wp-content/plugins/pst/pulldata.php';
 
 
 // Initialize site
@@ -190,6 +192,43 @@ function gcDrawChart() {
     dataview.setColumns([0,2]);
     chart.draw(dataview, options);
   }
-  
+
+  button[3] = document.getElementById('button3');
+  button[3].onclick = function() {
+    var xmlhttp;
+    if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    }
+    else { // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+
+            // data is here
+            if((xmlhttp.responseText != '')) {
+              var values = xmlhttp.responseText.split(',');
+              var i,value;
+              newdata = new google.visualization.DataTable();
+              newdata.addColumn('datetime', 'Time');
+              newdata.addColumn('number', 'Humidity');
+              for(i = 0; i < values.length; ++i) {
+                value = values[i].split('|');
+                newdata.addRow([new Date(value[0]), parseFloat(value[1]) ]);
+                chart.draw(newdata, options);
+              }
+            }
+            
+        }
+    }
+
+    xmlhttp.open("GET", pullDataUrl + '?var=humidity', true);
+    xmlhttp.send();
+
+
+    dataview.setColumns([0,2]);
+    chart.draw(dataview, options);
+  }
+
 }
 
