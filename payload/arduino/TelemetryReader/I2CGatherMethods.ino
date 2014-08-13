@@ -8,7 +8,7 @@ void getBarometer() {
   while (temp == NULL) {
     temp = _barometer.getTemperature(MS561101BA_OSR_4096);
   }
-  while (pressure = NULL) {
+  while (pressure == NULL) {
     pressure = _barometer.getPressure(MS561101BA_OSR_4096);
   }
   _tempPressure = temp;
