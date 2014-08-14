@@ -8,3 +8,6 @@ web/sftp-config.json
 # no c# files that contain passwords
 ground/Skyrise/Skyrise/Properties/Settings.Designer.cs
 ground/Skyrise/Skyrise/Properties/Settings.settings
+# no objects or binaries
+*/bin
+*/obj
