@@ -1,0 +1,38 @@
+D:\Dropbox\Datafiler\Visual Studio Projects\Skyrise\Skyrise\bin\Debug\Skyrise.exe
+D:\Dropbox\Datafiler\Visual Studio Projects\Skyrise\Skyrise\bin\Debug\Skyrise.pdb
+D:\Dropbox\Datafiler\Visual Studio Projects\Skyrise\Skyrise\obj\x86\Debug\Skyrise.DataWindow.resources
+D:\Dropbox\Datafiler\Visual Studio Projects\Skyrise\Skyrise\obj\x86\Debug\Skyrise.MainWindow.resources
+D:\Dropbox\Datafiler\Visual Studio Projects\Skyrise\Skyrise\obj\x86\Debug\Skyrise.Properties.Resources.resources
+D:\Dropbox\Datafiler\Visual Studio Projects\Skyrise\Skyrise\obj\x86\Debug\Skyrise.csproj.GenerateResource.Cache
+D:\Dropbox\Datafiler\Visual Studio Projects\Skyrise\Skyrise\obj\x86\Debug\Skyrise.exe
+D:\Dropbox\Datafiler\Visual Studio Projects\Skyrise\Skyrise\obj\x86\Debug\Skyrise.pdb
+D:\Dropbox\Datafiler\Visual Studio Projects\Skyrise\Skyrise\obj\x86\Debug\Skyrise.csprojResolveAssemblyReference.cache
+D:\Dropbox\Dokumenter\Project Skyrise\01 Tracking\C#\Skyrise\Skyrise\obj\x86\Debug\Skyrise.exe
+D:\Dropbox\Dokumenter\Project Skyrise\01 Tracking\C#\Skyrise\Skyrise\obj\x86\Debug\Skyrise.pdb
+D:\Dropbox\Dokumenter\Project Skyrise\01 Tracking\C#\Skyrise\Skyrise\bin\Debug\Skyrise.exe
+D:\Dropbox\Dokumenter\Project Skyrise\01 Tracking\C#\Skyrise\Skyrise\bin\Debug\Skyrise.pdb
+D:\Dropbox\Dokumenter\Project Skyrise\01 Tracking\C#\Skyrise\Skyrise\obj\x86\Debug\Skyrise.csprojResolveAssemblyReference.cache
+D:\Dropbox\Dokumenter\Project Skyrise\01 Tracking\C#\Skyrise\Skyrise\obj\x86\Debug\Skyrise.DataWindow.resources
+D:\Dropbox\Dokumenter\Project Skyrise\01 Tracking\C#\Skyrise\Skyrise\obj\x86\Debug\Skyrise.MainWindow.resources
+D:\Dropbox\Dokumenter\Project Skyrise\01 Tracking\C#\Skyrise\Skyrise\obj\x86\Debug\Skyrise.Properties.Resources.resources
+D:\Dropbox\Dokumenter\Project Skyrise\01 Tracking\C#\Skyrise\Skyrise\obj\x86\Debug\Skyrise.csproj.GenerateResource.Cache
+D:\Dropbox\Dokumenter\Project Skyrise\01 Tracking\C#\Skyrise\Skyrise\obj\x86\Debug\Skyrise.RawData.resources
+D:\Dropbox\Dokumenter\Project Skyrise\15 Ground Station\Skyrise\Skyrise\obj\x86\Debug\Skyrise.exe
+D:\Dropbox\Dokumenter\Project Skyrise\15 Ground Station\Skyrise\Skyrise\obj\x86\Debug\Skyrise.pdb
+D:\Dropbox\Dokumenter\Project Skyrise\15 Ground Station\Skyrise\Skyrise\bin\Debug\Skyrise.exe
+D:\Dropbox\Dokumenter\Project Skyrise\15 Ground Station\Skyrise\Skyrise\bin\Debug\Skyrise.pdb
+D:\Dropbox\Dokumenter\Project Skyrise\15 Ground Station\Skyrise\Skyrise\obj\x86\Debug\Skyrise.csprojResolveAssemblyReference.cache
+D:\Dropbox\Dokumenter\Project Skyrise\15 Ground Station\Skyrise\Skyrise\obj\x86\Debug\Skyrise.DataWindow.resources
+D:\Dropbox\Dokumenter\Project Skyrise\15 Ground Station\Skyrise\Skyrise\obj\x86\Debug\Skyrise.MainWindow.resources
+D:\Dropbox\Dokumenter\Project Skyrise\15 Ground Station\Skyrise\Skyrise\obj\x86\Debug\Skyrise.Properties.Resources.resources
+D:\Dropbox\Dokumenter\Project Skyrise\15 Ground Station\Skyrise\Skyrise\obj\x86\Debug\Skyrise.csproj.GenerateResource.Cache
+D:\Dropbox\Dokumenter\Project Skyrise\15 Ground Station\Skyrise\Skyrise\bin\Debug\db.mdf
+D:\Dropbox\Dokumenter\Project Skyrise\15 Ground Station\Skyrise\Skyrise\bin\Debug\db_log.ldf
+D:\Dropbox\Dokumenter\Project Skyrise\15 Ground Station\Skyrise\Skyrise\obj\x86\Debug\Skyrise.DirectionWindow.resources
+D:\Dropbox\Dokumenter\Project Skyrise\15 Ground Station\Skyrise\Skyrise\bin\Debug\Hammock.ClientProfile.dll
+D:\Dropbox\Dokumenter\Project Skyrise\15 Ground Station\Skyrise\Skyrise\bin\Debug\Newtonsoft.Json.dll
+D:\Dropbox\Dokumenter\Project Skyrise\15 Ground Station\Skyrise\Skyrise\bin\Debug\TweetSharp.dll
+D:\Dropbox\Dokumenter\Project Skyrise\15 Ground Station\Skyrise\Skyrise\bin\Debug\Hammock.ClientProfile.pdb
+D:\Dropbox\Dokumenter\Project Skyrise\15 Ground Station\Skyrise\Skyrise\bin\Debug\Newtonsoft.Json.xml
+D:\Dropbox\Dokumenter\Project Skyrise\15 Ground Station\Skyrise\Skyrise\bin\Debug\TweetSharp.pdb
+D:\Dropbox\Dokumenter\Project Skyrise\15 Ground Station\Skyrise\Skyrise\obj\x86\Debug\Skyrise.TwitterTest.resources
