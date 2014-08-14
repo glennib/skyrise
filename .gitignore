@@ -9,5 +9,5 @@ web/sftp-config.json
 ground/Skyrise/Skyrise/Properties/Settings.Designer.cs
 ground/Skyrise/Skyrise/Properties/Settings.settings
 # no objects or binaries
-*/bin
-*/obj
+*/bin/*
+*/obj/*
