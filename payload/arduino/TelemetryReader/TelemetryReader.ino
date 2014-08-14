@@ -102,16 +102,21 @@ void loop() {
     char charBuf[12];
     String telemetry = (String) START_OF_MESSAGE;
     // GPS
-    telemetry += _gpstime; // time
-    telemetry += ',';
-    dtostrf(_lat, 4, 7, charBuf); // lat
-    telemetry += charBuf;
-    telemetry += ',';
-    dtostrf(_lon, 4, 7, charBuf); // lon
-    telemetry += charBuf;
-    telemetry += ',';
-    telemetry += int(_alt); // alt
-    telemetry += ',';
+    if (_gpsGood) {
+      telemetry += _gpstime; // time
+      telemetry += ',';
+      dtostrf(_lat, 4, 7, charBuf); // lat
+      telemetry += charBuf;
+      telemetry += ',';
+      dtostrf(_lon, 4, 7, charBuf); // lon
+      telemetry += charBuf;
+      telemetry += ',';
+      telemetry += int(_alt); // alt
+      telemetry += ',';
+    }
+    else {
+      telemetry += ",,,,";
+    }
     // acceleration
     dtostrf(_accX, 3, 2, charBuf);
     telemetry += charBuf;
@@ -148,7 +153,7 @@ void loop() {
     Serial.print(telemetry);
     Serial1.print(telemetry);
   }  
-  
+
   if (_gpsGood) {
     digitalWrite(GPS_PIN, HIGH);
     _lastGpsLight = true;
@@ -166,9 +171,9 @@ void loop() {
       }
       _timestampLED = millis();
     }
-    
+
   }
-  
+
   delay(DELAY);
 }
 
@@ -200,5 +205,6 @@ void loop() {
  now = _timestampLED;
  }
  */
+
 
 
