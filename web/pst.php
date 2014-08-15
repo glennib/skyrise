@@ -22,6 +22,13 @@ include_once('display.php');
 wp_register_script('pstcustom', '/wp-content/plugins/pst/pst.js',array(),'0.1',true);
 wp_register_script('gcharts', '//www.google.com/jsapi',array(),'1.0',true);
 
+// Register icon font
+add_action( 'wp_enqueue_scripts', 'pst_register_plugin_styles' );
+function pst_register_plugin_styles() {
+	wp_register_style('fontastic', '//fontastic.s3.amazonaws.com/nPJXzizDbj2MwBNG7A8Eti/icons.css', array(), '1.0', false);
+	wp_enqueue_style('fontastic');
+};
+
 
 // Output data into js vars
 function pst_js_data() {

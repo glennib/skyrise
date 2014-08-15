@@ -195,6 +195,10 @@ function gcDrawChart() {
 
   button[3] = document.getElementById('button3');
   button[3].onclick = function() {
+
+    //
+    // This button utilizes ajax loading of data to the graph.
+
     var xmlhttp;
     if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
         xmlhttp = new XMLHttpRequest();
@@ -209,9 +213,12 @@ function gcDrawChart() {
             if((xmlhttp.responseText != '')) {
               var values = xmlhttp.responseText.split(',');
               var i,value;
+
               newdata = new google.visualization.DataTable();
               newdata.addColumn('datetime', 'Time');
               newdata.addColumn('number', 'Humidity');
+
+
               for(i = 0; i < values.length; ++i) {
                 value = values[i].split('|');
                 newdata.addRow([new Date(value[0]), parseFloat(value[1]) ]);

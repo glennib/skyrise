@@ -4,4 +4,6 @@
 data/*
 web/config.php
 web/sftp-config.json
+*.sublime-workspace
+*.sublime-project
 
