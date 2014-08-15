@@ -42,6 +42,7 @@ HTU21D _humiditySensor;
 
 // for timekeeping purposes:
 unsigned long _timestamp = 0;
+unsigned long _timestampLED = 0;
 const int DELAY = 10;
 
 // fields from gps sensor
@@ -101,16 +102,21 @@ void loop() {
     char charBuf[12];
     String telemetry = (String) START_OF_MESSAGE;
     // GPS
-    telemetry += _gpstime; // time
-    telemetry += ',';
-    dtostrf(_lat, 4, 7, charBuf); // lat
-    telemetry += charBuf;
-    telemetry += ',';
-    dtostrf(_lon, 4, 7, charBuf); // lon
-    telemetry += charBuf;
-    telemetry += ',';
-    telemetry += int(_alt); // alt
-    telemetry += ',';
+    if (_gpsGood) {
+      telemetry += _gpstime; // time
+      telemetry += ',';
+      dtostrf(_lat, 4, 7, charBuf); // lat
+      telemetry += charBuf;
+      telemetry += ',';
+      dtostrf(_lon, 4, 7, charBuf); // lon
+      telemetry += charBuf;
+      telemetry += ',';
+      telemetry += int(_alt); // alt
+      telemetry += ',';
+    }
+    else {
+      telemetry += ",,,,";
+    }
     // acceleration
     dtostrf(_accX, 3, 2, charBuf);
     telemetry += charBuf;
@@ -146,15 +152,28 @@ void loop() {
 
     Serial.print(telemetry);
     Serial1.print(telemetry);
-  }
-  
+  }  
+
   if (_gpsGood) {
     digitalWrite(GPS_PIN, HIGH);
+    _lastGpsLight = true;
   }
   else {
-    digitalWrite(GPS_PIN, LOW);
+    now = millis();
+    if (now - _timestampLED >= 500) {
+      if (_lastGpsLight) {
+        digitalWrite(GPS_PIN, LOW);
+        _lastGpsLight = false;
+      }
+      else {
+        digitalWrite(GPS_PIN, HIGH);
+        _lastGpsLight = true;
+      }
+      _timestampLED = millis();
+    }
+
   }
-  
+
   delay(DELAY);
 }
 
@@ -186,5 +205,6 @@ void loop() {
  now = _timestampLED;
  }
  */
+
 
 

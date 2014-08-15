@@ -1,9 +1,15 @@
+# no python binaries or swaps
 *.pyc
 *.py~
 *.pyo
-data/*
+# no web files that contain passwords
 web/config.php
 web/sftp-config.json
 *.sublime-workspace
 *.sublime-project
-
+# no c# files that contain passwords
+ground/Skyrise/Skyrise/Properties/Settings.Designer.cs
+ground/Skyrise/Skyrise/Properties/Settings.settings
+# no objects or binaries
+*/bin/*
+*/obj/*
