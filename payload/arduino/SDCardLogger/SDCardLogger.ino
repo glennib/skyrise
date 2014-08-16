@@ -23,8 +23,8 @@ const int chipSelect = 10;
 
 void setup() {
   // Open serial communications and wait for port to open:
-  //Serial.begin(9600);
-  //while (!Serial) {
+  Serial.begin(9600);
+  //while (!Serial) { // this here waint can't be here. It waits until something actually is connected.
   //  ; // wait for serial port to connect. Needed for Leonardo only
   //}
   Serial1.begin(9600);
