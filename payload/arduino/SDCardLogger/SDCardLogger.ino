@@ -28,7 +28,9 @@ void setup() {
     ; // wait for serial port to connect. Needed for Leonardo only
   }
   Serial1.begin(9600);
-  while (!Serial1) {;} // wait
+  while (!Serial1) {
+    ;
+  } // wait
 
   setupSD();
 }
@@ -40,4 +42,5 @@ void loop() {
   handleSerial();
   delay(DELAY);
 }
+
 
