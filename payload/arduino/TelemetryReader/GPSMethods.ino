@@ -1,10 +1,10 @@
 /*
 
-  GPS methods that are used by the main program.
+ GPS methods that are used by the main program.
+ 
+ */
 
-*/
-
-#define SERIAL_DELAY 5
+#define SERIAL_DELAY 2
 #define GPS_CHAR '$'
 
 String _curString = "";
@@ -16,23 +16,23 @@ void handleSerial() {
   if (Serial1.available()) { // indicates that there's more to the current gps transmit
     handleSerial();
   }
-  else { // should indicate that the current gps transmit is done, move on to processing
+  else if (_curString != "") { // should indicate that the current gps transmit is done, move on to processing
     processCurString();
   }
 }
 
 void processCurString() { // is only entered if the current gps transmit is complete
-  int pos1 = _curString.indexOf(GPS_CHAR);
-  int pos2 = _curString.indexOf(GPS_CHAR, pos1 + 1);
-  if (pos2 != -1) { // means there's more to process.
-    String gpsString = _curString.substring(pos1, pos2 - pos1 + 1);
-    _curString = _curString.substring(pos2);
-    processGPSString(gpsString);
-  }
-  else { // there's nothing more to process
-    processGPSString(_curString);
-    _curString = "";
-  }
+    int pos1 = _curString.indexOf(GPS_CHAR);
+    int pos2 = _curString.indexOf(GPS_CHAR, pos1 + 1);
+    if (pos2 != -1) { // means there's more to process.
+      String gpsString = _curString.substring(pos1, pos2 - pos1 + 1);
+      _curString = _curString.substring(pos2);
+      processGPSString(gpsString);
+    }
+    else { // there's nothing more to process
+      processGPSString(_curString);
+      _curString = "";
+    }
 }
 
 void processGPSString(String gpsString) {
@@ -158,5 +158,6 @@ void processGGA(String gpsString) {
   _alt = alt;
   _gpstime = gpstime;
 }
+
 
 

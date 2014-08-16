@@ -131,7 +131,7 @@ void loop() {
     telemetry += (String)int(_heading);
     telemetry += ',';
     // pressure
-    dtostrf(_pressure, 3, 5, charBuf);
+    dtostrf(_pressure, 3, 2, charBuf);
     telemetry += charBuf;
     telemetry += ',';
     // tempPressure
@@ -152,7 +152,7 @@ void loop() {
 
     Serial.print(telemetry);
     Serial1.print(telemetry);
-  }  
+  }
 
   if (_gpsGood) {
     digitalWrite(GPS_PIN, HIGH);
@@ -171,10 +171,8 @@ void loop() {
       }
       _timestampLED = millis();
     }
-
   }
-
-  delay(DELAY);
+  handleSerial();  
 }
 
 
