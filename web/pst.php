@@ -18,6 +18,9 @@ include_once('getdata.php');
 // Display functions
 include_once('display.php');
 
+// Add options
+include_once('pstoptions.php');
+
 // Register scripts
 wp_register_script('pstcustom', '/wp-content/plugins/pst/pst.js',array(),'0.1',true);
 wp_register_script('gcharts', '//www.google.com/jsapi',array(),'1.0',true);

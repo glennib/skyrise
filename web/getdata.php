@@ -18,9 +18,10 @@ function pst_gmaps_vars($latest) {
 	$codestring = "var sites = {};\n";
 
 	// Variables for launch
-	$location = 'HiT Rauland';
-	$lat = 68.05660;
-	$lon = -1;
+	$options = get_option( 'pst_option' );
+	$location = $options['pst_start_title'];
+	$lat = $options['pst_start_lat'];;
+	$lon = $options['pst_start_lon'];;
 	
 		
 	// Create the launchsite
@@ -200,5 +201,28 @@ function pst_get_data($variable) {
 	}
 
 	return $output;
+}
+
+// Delete all data in table
+function pst_truncate_data() {
+	global $pstconfig;
+
+	//connection to the database
+	$dbhandle = mysql_connect($pstconfig['dbserver'], $pstconfig['dbuser'], $pstconfig['dbpass']) 
+	 or die("Unable to connect to MySQL");
+
+	//select a database to work with
+	$selected = mysql_select_db($pstconfig['dbname'],$dbhandle) 
+	  or die("Could not select database");
+
+	  
+	//get latest input id
+	$latest = mysql_query("TRUNCATE TABLE " . $pstconfig['dbtable'] );
+	//close the connection
+	mysql_close($dbhandle);
+	
+	//return
+	return;
+
 }
 ?>
