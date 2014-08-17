@@ -1,3 +1,7 @@
+/*
+  Almost copied from http://bildr.org/2011/06/l3g4200d-arduino/
+*/
+
 #define CTRL_REG1 0x20
 #define CTRL_REG2 0x21
 #define CTRL_REG3 0x22
