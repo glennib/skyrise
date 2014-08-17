@@ -101,7 +101,6 @@ void loop() {
     getAccelerometer();
     getMagnetometer();
     getHumiditySensor();
-    getBarometer();
     getGyroscope();
 
     // handle string
