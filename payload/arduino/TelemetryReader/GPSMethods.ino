@@ -36,7 +36,7 @@ void processCurString() { // is only entered if the current gps transmit is comp
 }
 
 void processGPSString(String gpsString) {
-  debug("processGPSString()");
+  //debug("processGPSString()");
   String name = gpsString.substring(0, 6);
   if (name == "$GPRMC") {
     processRMC(gpsString);
@@ -74,7 +74,7 @@ void processGPSString(String gpsString) {
 
 void processRMC(String gpsString) {
   // 12 fields
-  debug("processRMC()");
+  //debug("processRMC()");
   int field = 0;
   for (int i = 0; i < gpsString.length(); i++) {
     if (gpsString[i] == ',') {
@@ -100,7 +100,7 @@ void processRMC(String gpsString) {
 }
 
 void processGGA(String gpsString) {
-  debug("processGGA()");
+  //debug("processGGA()");
   float lat = 0.0, lon = 0.0;
   int alt;
   String gpstime = "";

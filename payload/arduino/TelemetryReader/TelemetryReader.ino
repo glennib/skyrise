@@ -30,6 +30,7 @@
 const char START_OF_MESSAGE = '$';
 const char END_OF_MESSAGE = '\n';
 const int GPS_PIN = 4;
+const int VOLTAGE_PIN = A0;
 
 // Software Serial
 SoftwareSerial _serial(7, 8); // RX 7, TX 8, calls for interrupt 4?
@@ -70,6 +71,9 @@ float _humidity = 0.0, _tempHumidity = 0.0;
 // fields for gyroscope
 int _spin = 0;
 
+// fields for voltage
+int _voltage = 0.0;
+
 void setup() {
   // I2C Setup
   Wire.begin();
@@ -102,6 +106,7 @@ void loop() {
     getMagnetometer();
     getHumiditySensor();
     getGyroscope();
+    getVoltage();
 
     // handle string
     char charBuf[12];
@@ -148,6 +153,8 @@ void loop() {
     telemetry += charBuf;
     telemetry += ',';
     // Voltage
+    dtostrf(_voltage, 4, 2, charBuf);
+    telemetry += charBuf;
     telemetry += ',';
     // GYRO SPIN
     telemetry += (String)_spin;
