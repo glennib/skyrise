@@ -3,6 +3,7 @@
   I2C Gather methods that are used by the main program.
 
 */
+
 void getBarometer() {
   float temp = NULL, pressure = NULL;
   while (temp == NULL) {
@@ -51,4 +52,8 @@ void getHumiditySensor() {
   _humidity = hum;
   _tempHumidity = temp;
   //_timestampHumidity = millis();
+}
+
+void getGyroscope() {
+  _spin = getSpin();
 }

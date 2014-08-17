@@ -25,14 +25,14 @@
 #include <HMC58X3.h>
 #include <ADXL345.h>
 #include <MS561101BA.h>
-//#include <SoftwareSerial.h>
+#include <SoftwareSerial.h>
 
 const char START_OF_MESSAGE = '$';
 const char END_OF_MESSAGE = '\n';
 const int GPS_PIN = 4;
 
 // Software Serial
-//SoftwareSerial _serial(7, 8); // RX 7, TX 8, calls for interrupt 4?
+SoftwareSerial _serial(7, 8); // RX 7, TX 8, calls for interrupt 4?
 
 // I2C equipment
 MS561101BA _barometer = MS561101BA();
@@ -67,6 +67,9 @@ float _heading = 0;
 // fields for humidity
 float _humidity = 0.0, _tempHumidity = 0.0;
 
+// fields for gyroscope
+int _spin = 0;
+
 void setup() {
   // I2C Setup
   Wire.begin();
@@ -77,11 +80,12 @@ void setup() {
   _magnetometer.calibrate(1, 32);
   _magnetometer.setMode(0);
   _humiditySensor.begin();
+  gyroSetup();
 
   // Serial Setup
   Serial.begin(9600);
   Serial1.begin(9600);
-  //_serial.begin(4800);
+  _serial.begin(9600);
 
   // IO setup
   pinMode(GPS_PIN, OUTPUT);
@@ -97,6 +101,8 @@ void loop() {
     getAccelerometer();
     getMagnetometer();
     getHumiditySensor();
+    getBarometer();
+    getGyroscope();
 
     // handle string
     char charBuf[12];
@@ -142,6 +148,11 @@ void loop() {
     dtostrf(_humidity, 3, 1, charBuf);
     telemetry += charBuf;
     telemetry += ',';
+    // Voltage
+    telemetry += ',';
+    // GYRO SPIN
+    telemetry += (String)_spin;
+    telemetry += ',';
     // tempHumidity
     dtostrf(_tempHumidity, 3, 1, charBuf);
     telemetry += charBuf;
@@ -151,7 +162,7 @@ void loop() {
     _timestamp = millis();
 
     Serial.print(telemetry);
-    Serial1.print(telemetry);
+    _serial.print(telemetry);
   }
 
   if (_gpsGood) {
@@ -174,35 +185,3 @@ void loop() {
   }
   handleSerial();  
 }
-
-
-/*
-     char charBuf[50];
- String telemetry = (String) START_OF_MESSAGE;
- 
- */
-
-
-/* 
- if (now - _timestampLED >= 350) {
- if (_gpsGood) {
- digitalWrite(GPS_PIN, HIGH);
- _lastGpsLight = true;
- }
- else {
- if (_lastGpsLight) {
- digitalWrite(GPS_PIN, LOW);
- _lastGpsLight = false;
- }
- else {
- digitalWrite(GPS_PIN, HIGH);
- _lastGpsLight = true;
- }
- }
- _timestampLED = millis();
- now = _timestampLED;
- }
- */
-
-
-
