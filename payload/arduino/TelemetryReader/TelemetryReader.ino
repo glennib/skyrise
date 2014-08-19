@@ -12,7 +12,11 @@
  * GY-80 Accelerometer, magnetometer and gyroscope
  * ublox MAX-6Q GPS
  
- Circuit is found in "*INSERT CIRCUIT LOCATION*".
+ Third party libraries used:
+ * FreeIMU
+ * HTU21D 
+ 
+ Circuit is found in "ArduinoPayload.vsdx".
  
  Author: Glenn Bitar
  Created: 2014-08-10

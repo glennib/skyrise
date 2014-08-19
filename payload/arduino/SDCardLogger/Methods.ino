@@ -4,7 +4,6 @@
 
 */
 
-
 void writeTelemetry(String telemetry) {  
   File dataFile = SD.open(FILE, FILE_WRITE);
   

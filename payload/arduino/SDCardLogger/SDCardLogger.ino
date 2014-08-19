@@ -20,7 +20,6 @@
 
 const int chipSelect = 10;
 
-
 void setup() {
   // Open serial communications and wait for port to open:
   Serial.begin(9600);
@@ -34,9 +33,6 @@ void setup() {
 
   setupSD();
 }
-
-
-// Global that holds current read, unprocessed information from serial port.
 
 void loop() {
   handleSerial();

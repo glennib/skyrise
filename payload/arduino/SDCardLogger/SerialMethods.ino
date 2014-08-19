@@ -9,6 +9,7 @@
 #define END_OF_MESSAGE '\n'
 #define SERIAL_DELAY 5
 
+// Global that holds current read, unprocessed information from serial port.
 String _curString = "";
 
 void handleSerial() {
