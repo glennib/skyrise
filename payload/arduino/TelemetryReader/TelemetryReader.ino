@@ -76,7 +76,7 @@ float _humidity = 0.0, _tempHumidity = 0.0;
 int _spin = 0;
 
 // fields for voltage
-int _voltage = 0.0;
+float _voltage = 0.0;
 
 void setup() {
   // I2C Setup
@@ -157,7 +157,7 @@ void loop() {
     telemetry += charBuf;
     telemetry += ',';
     // Voltage
-    dtostrf(_voltage, 4, 2, charBuf);
+    dtostrf(_voltage, 3, 2, charBuf);
     telemetry += charBuf;
     telemetry += ',';
     // GYRO SPIN

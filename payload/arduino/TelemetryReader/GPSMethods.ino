@@ -82,7 +82,6 @@ void processRMC(String gpsString) {
     }
     else {
       if (field == 2) {
-        debug(gpsString[i]);
         if (gpsString[i] == 'V') {
           _gpsGood = false;
           break;
