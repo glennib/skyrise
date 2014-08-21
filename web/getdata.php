@@ -132,7 +132,7 @@ function pst_load_vars() {
 	$lats = "var pstlats = [ ";
 	$lons = "var pstlons = [ ";
 	$alts = "var pstalts = [ ";
-	$tempouts = "var psttempouts = [ ";
+	//$tempouts = "var psttempouts = [ ";
 	
 	while ($row = mysql_fetch_array($result)) {
 		// Add values
@@ -140,7 +140,7 @@ function pst_load_vars() {
 		$lats .= $row['lat'] . ",";
 		$lons .= $row['lon'] . ",";
 		$alts .= $row['alt'] . ",";
-		$tempouts .= $row['tempout'] . ",";
+		//$tempouts .= $row['tempout'] . ",";
 	}
 	
 	// N
@@ -148,14 +148,14 @@ function pst_load_vars() {
 	$lats .= "];\n";
 	$lons .= "];\n";
 	$alts .= "];\n";
-	$tempouts .= "];\n";
+	//$tempouts .= "];\n";
 ?>
 
 	<script type="text/javascript">
 		<?php echo $lats; ?>
 		<?php echo $lons; ?>
 		<?php echo $alts; ?>
-		<?php echo $tempouts; ?>
+		<?php //echo $tempouts; ?>
 		<?php echo $times; ?>
 	</script>
 	
@@ -175,12 +175,13 @@ function pst_get_data($variable) {
 	global $pstconfig;
 
 	// List array of all know variables
-	$okVars = array('lat','lon','alt','pressure','tempin','tempout','heading','accelx','accely','accelz','humidity','spin','voltage');
+	$okVars = array('alt','pressure','tempin','tempout','heading','accel','humidity','spin','voltage');
 
 	// Check if its ok, else choose alt
 	if (!in_array($variable, $okVars)) {
 		$variable = 'alt';
 	}
+
 
 	//connection to the database
 	$dbhandle = mysql_connect($pstconfig['dbserver'], $pstconfig['dbuser'], $pstconfig['dbpass']) 
@@ -193,11 +194,13 @@ function pst_get_data($variable) {
 	  
 	//get latest input id
 	//execute the SQL query and return records
-	$result = mysql_query("SELECT time, " . $variable . " FROM " . $pstconfig['dbtable'] . " WHERE " . $variable . " IS NOT NULL" );
+	$result = mysql_query("SELECT time, " . ( ($variable == 'accel') ? 'accelx, accely, accelz' : $variable ) .
+			 " FROM " . $pstconfig['dbtable'] . " WHERE " . ( ($variable == 'accel') ? 'accelx' : $variable ) . " IS NOT NULL" );
+
 
 	while ($row = mysql_fetch_array($result)) {
 		// Add values
-		$output .= "". $row['time'] . "|" .$row[$variable] . ",";
+		$output .= "". $row['time'] . "|" . ( ($variable == 'accel') ? sqrt( pow($row['accelx'],2) + pow($row['accely'],2) + pow($row['accelz'],2)) : $row[$variable] ) . ",";
 	}
 
 	return $output;

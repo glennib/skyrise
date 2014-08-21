@@ -57,9 +57,19 @@ function pstlive_display( $atts ){
 	$html .= pst_display_gc()."\n";
 	
 	// Add buttons
-	$html .= '<a id="button1">Altitude</a>'."\n";
-	$html .= '<a id="button2">TempOut</a>'."\n";
-	$html .= '<a id="button3">Humidity</a>'."\n";
+	$variables = array(   'alt' => 'Altitude',
+                      'pressure' => 'Pressure',
+                      'tempout' => 'Temperature Outside',
+                      'tempin' => 'Temperature Inside',
+                      'heading' => 'Heading',
+                      'accel' => 'Acceleration',
+                      'humidity' => 'Humidity',
+                      'spin' => 'Spin',
+                      'voltage' => 'Battery voltage');
+
+    foreach($variables as $key => $value){
+		$html .= '<a class="chartbutton" id="button'.$key.'">'.$value."</a>\n";
+	}
 
 	// Add all latest data
 	$html .= pst_display_latest();

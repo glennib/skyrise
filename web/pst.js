@@ -7,6 +7,7 @@ var newdata = null; // data for chart
 var pins = {};
 var infoWindow = {};
 var button = {};
+var variables = {};
 var pullDataUrl = 'http://skyrise.hit.no/wp-content/plugins/pst/pulldata.php';
 
 
@@ -82,7 +83,7 @@ function gmInitialize() {
   
   
   // Define markers and circles based on data
-  var pinImage = '//skyrise.hit.no/wp-content/plugins/pst/pin.png';
+  //var pinImage = '//skyrise.hit.no/wp-content/plugins/pst/pin.png';
   
   var i = 0;
   for (var site in sites) {
@@ -92,7 +93,6 @@ function gmInitialize() {
   
 	  var pinOptions = {
 		  map: map,
-		  icon: pinImage,
 		  position: centerLatLon,
 		  title: sites[i].location,
 		  id: i,
@@ -153,17 +153,16 @@ function gcDrawChart() {
   data = new google.visualization.DataTable();
   data.addColumn('datetime', 'Time');
   data.addColumn('number', 'Altitude');
-  data.addColumn('number', 'TempOut');
   
   // Add each row
   for (i = 0; i < psttimes.length; i++) { 
-	data.addRow([new Date(psttimes[i]), pstalts[i], psttempouts[i]]);
+	data.addRow([new Date(psttimes[i]), pstalts[i]]);
   }
 
   
-  // DataView
-  dataview = new google.visualization.DataView(data)
-  dataview.setColumns([0,1]);
+  // DataView - a view of the table..
+  //dataview = new google.visualization.DataView(data)
+  //dataview.setColumns([0,1]);
   
   // Set chart options
   var options = {'title':'Altitude',
@@ -178,64 +177,71 @@ function gcDrawChart() {
   // Instantiate and draw our chart, passing in some options.
   chart = new google.visualization.LineChart(document.getElementById('chart-canvas'));
   
-  chart.draw(dataview, options);
+  chart.draw(data, options);
   
+  // Set varables an titles
+  variables = {   'alt':'Altitude',
+                      'pressure':'Pressure',
+                      'tempout':'Temperature Outside',
+                      'tempin':'Temperature Inside',
+                      'heading':'Heading',
+                      'accel':'Acceleration',
+                      'humidity':'Humidity',
+                      'spin':'Spin',
+                      'voltage':'Battery voltage'};
+
   // Buttons for changing values
-  button[1] = document.getElementById('button1');
-  button[1].onclick = function() {
-    dataview.setColumns([0,1]);
-    chart.draw(dataview, options);
-  }
-  
-  button[2] = document.getElementById('button2');
-  button[2].onclick = function() {
-    dataview.setColumns([0,2]);
-    chart.draw(dataview, options);
-  }
 
-  button[3] = document.getElementById('button3');
-  button[3].onclick = function() {
-
-    //
-    // This button utilizes ajax loading of data to the graph.
-
-    var xmlhttp;
-    if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
-        xmlhttp = new XMLHttpRequest();
-    }
-    else { // code for IE6, IE5
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    xmlhttp.onreadystatechange = function() {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-
-            // data is here
-            if((xmlhttp.responseText != '')) {
-              var values = xmlhttp.responseText.split(',');
-              var i,value;
-
-              newdata = new google.visualization.DataTable();
-              newdata.addColumn('datetime', 'Time');
-              newdata.addColumn('number', 'Humidity');
+  var ii = 1;
+  var buttonID = '';
 
 
-              for(i = 0; i < values.length; ++i) {
-                value = values[i].split('|');
-                newdata.addRow([new Date(value[0]), parseFloat(value[1]) ]);
-                chart.draw(newdata, options);
-              }
-            }
-            
+  for(var key in variables) {
+
+    buttonID = 'button'+key; 
+
+    if(document.getElementById(buttonID)) {
+      button[ii] = document.getElementById(buttonID);
+      button[ii].setAttribute('data-key',key);
+      button[ii].onclick = function() {
+        var localkey = this.getAttribute("data-key");
+
+        // Ajax load
+        var xmlhttp;
+        if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
         }
+        else { // code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+
+                // data is here
+                if((xmlhttp.responseText != '')) {
+                  var values = xmlhttp.responseText.split(',');
+                  var i,value;
+
+                  newdata = new google.visualization.DataTable();
+                  newdata.addColumn('datetime', 'Time');
+                  newdata.addColumn('number', variables[localkey]);
+
+
+                  for(i = 0; i < values.length; ++i) {
+                    value = values[i].split('|');
+                    newdata.addRow([new Date(value[0]), parseFloat(value[1]) ]);
+                    chart.draw(newdata, options);
+                  }
+                }
+                
+            }
+        }
+
+        xmlhttp.open("GET", pullDataUrl + '?var=' + localkey, true);
+        xmlhttp.send();
+      }
     }
-
-    xmlhttp.open("GET", pullDataUrl + '?var=humidity', true);
-    xmlhttp.send();
-
-
-    dataview.setColumns([0,2]);
-    chart.draw(dataview, options);
+    ii=ii+1; //increment ii
   }
-
 }
 
