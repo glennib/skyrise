@@ -20,7 +20,7 @@
  
  Author: Glenn Bitar
  Created: 2014-08-10
- Modified: 2014-08-20
+ Modified: 2014-08-21
  
  */
 
@@ -78,7 +78,7 @@ int _spin = 0;
 // fields for voltage
 float _voltage = 0.0;
 
-void setup() {
+void setup() {  
   // I2C Setup
   Wire.begin();
   _barometer.init(MS561101BA_ADDR_CSB_HIGH);
@@ -94,6 +94,10 @@ void setup() {
   Serial.begin(9600);
   Serial1.begin(9600);
   _serial.begin(9600);
+  
+  // GPS setup
+  delay(2000);
+  gpsSetup();
 
   // IO setup
   pinMode(GPS_PIN, OUTPUT);
@@ -156,16 +160,17 @@ void loop() {
     dtostrf(_humidity, 3, 1, charBuf);
     telemetry += charBuf;
     telemetry += ',';
+    // tempHumidity
+    dtostrf(_tempHumidity, 3, 1, charBuf);
+    telemetry += charBuf;
+    telemetry += ',';
     // Voltage
     dtostrf(_voltage, 3, 2, charBuf);
     telemetry += charBuf;
     telemetry += ',';
     // GYRO SPIN
     telemetry += (String)_spin;
-    telemetry += ',';
-    // tempHumidity
-    dtostrf(_tempHumidity, 3, 1, charBuf);
-    telemetry += charBuf;
+    
     // END
     telemetry += END_OF_MESSAGE;
 

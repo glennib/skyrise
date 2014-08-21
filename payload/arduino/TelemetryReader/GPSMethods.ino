@@ -155,8 +155,57 @@ void processGGA(String gpsString) {
   _lat = lat;
   _lon = lon;
   _alt = alt;
-  _gpstime = gpstime;
+  _gpstime = gpstime.substring(0, 6);
 }
 
-
-
+void gpsSetup() {
+  byte setupArray[44];
+  setupArray[ 0] = 181;
+  setupArray[ 1] = 98;
+  setupArray[ 2] = 6;
+  setupArray[ 3] = 36;
+  setupArray[ 4] = 36;
+  setupArray[ 5] = 0;
+  setupArray[ 6] = 255;
+  setupArray[ 7] = 255;
+  setupArray[ 8] = 6;
+  setupArray[ 9] = 3;
+  setupArray[10] = 0;
+  setupArray[11] = 0;
+  setupArray[12] = 0;
+  setupArray[13] = 0;
+  setupArray[14] = 16;
+  setupArray[15] = 39;
+  setupArray[16] = 0;
+  setupArray[17] = 0;
+  setupArray[18] = 5;
+  setupArray[19] = 0;
+  setupArray[20] = 250;
+  setupArray[21] = 0;
+  setupArray[22] = 250;
+  setupArray[23] = 0;
+  setupArray[24] = 100;
+  setupArray[25] = 0;
+  setupArray[26] = 44;
+  setupArray[27] = 1;
+  setupArray[28] = 0;
+  setupArray[29] = 0;
+  setupArray[30] = 0;
+  setupArray[31] = 0;
+  setupArray[32] = 16;
+  setupArray[33] = 39;
+  setupArray[34] = 0;
+  setupArray[35] = 0;
+  setupArray[36] = 0;
+  setupArray[37] = 0;
+  setupArray[38] = 0;
+  setupArray[39] = 0;
+  setupArray[40] = 0;
+  setupArray[41] = 0;
+  setupArray[42] = 77;
+  setupArray[43] = 219;
+  
+  for (int i = 0; i < 44; i++) {
+    Serial1.write(setupArray[i]);
+  }
+}
