@@ -52,6 +52,7 @@ void processGPSString(String gpsString) {
       processGGA(gpsString);
     }
     else {
+      _sats = 0;
       //debug("No good signal");
     }
   }
@@ -100,8 +101,6 @@ void processRMC(String gpsString) {
 
 void processGGA(String gpsString) {
   //debug("processGGA()");
-  float lat = 0.0, lon = 0.0;
-  int alt;
   String buf = "";
   int field = 0;
   char charBuf[15];
@@ -110,13 +109,13 @@ void processGGA(String gpsString) {
       switch (field) { // what to do when finished processing a field??
       case 2: // lat
         buf.substring(0, 2).toCharArray(charBuf, 50);
-        lat = atof(charBuf);
+        _lat = atof(charBuf);
         buf.substring(2).toCharArray(charBuf, 50);
-        lat += atof(charBuf) / 60;
+        _lat += atof(charBuf) / 60;
         break;
       case 3:
         if (buf == "S") {
-          lat *= -1;
+          _lat *= -1;
         }
         /*else if(buf != "N") {
           //debug("Neither north or south?" + gpsString);
@@ -124,21 +123,24 @@ void processGGA(String gpsString) {
         break;
       case 4: // lon
         buf.substring(0, 3).toCharArray(charBuf, 50);
-        lon = atof(charBuf);
+        _lon = atof(charBuf);
         buf.substring(3).toCharArray(charBuf, 50);
-        lon += atof(charBuf) / 60;
+        _lon += atof(charBuf) / 60;
         break;
       case 5:
         if (buf == "W") {
-          lon *= -1;
+          _lon *= -1;
         }
         /*else if(buf != "E") {
           //debug("Neither west or east??" + gpsString);
         }*/
         break;
+      case 7:
+        buf.toCharArray(charBuf, 15);
+        _sats = atoi(charBuf);
       case 9: // alt
-        buf.toCharArray(charBuf, 50);
-        alt = atoi(charBuf);
+        buf.toCharArray(charBuf, 15);
+        _alt = atoi(charBuf);
         break;
       }
       buf = "";
@@ -148,9 +150,6 @@ void processGGA(String gpsString) {
       buf += gpsString[i];      
     }
   }
-  _lat = lat;
-  _lon = lon;
-  _alt = alt;
 }
 
 void gpsSetup() {

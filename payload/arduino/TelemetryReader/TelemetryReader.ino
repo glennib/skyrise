@@ -59,6 +59,7 @@ String _time = "";
 float _lat = 0.0;
 float _lon = 0.0;
 unsigned int _alt = 0.0;
+byte _sats = 0;
 
 boolean _gpsGood = false;
 //boolean _lastGpsLight = false;
@@ -142,6 +143,8 @@ void loop() {
     else {
       telemetry += ",,,";
     }
+    telemetry += _sats;
+    telemetry += ',';
     // acceleration
     telemetry += _acc;
     telemetry += ',';
