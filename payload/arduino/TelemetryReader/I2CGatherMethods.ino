@@ -31,9 +31,9 @@ void getAccelerometer() {
 }
 
 void getMagnetometer() {
-  int ix, iy, iz;
+  //int ix, iy, iz;
   float fx, fy, fz;
-  _magnetometer.getValues(&ix, &iy, &iz);
+  //_magnetometer.getValues(&ix, &iy, &iz);
   _magnetometer.getValues(&fx, &fy, &fz);
   
   float heading = atan2(fy, fx);
@@ -46,11 +46,11 @@ void getMagnetometer() {
 }
 
 void getHumiditySensor() {
-  float hum = _humiditySensor.readHumidity();
-  float temp = _humiditySensor.readTemperature();
+  _humidity = _humiditySensor.readHumidity();
+  _tempHumidity = _humiditySensor.readTemperature();
   
-  _humidity = hum;
-  _tempHumidity = temp;
+  /*_humidity = hum;
+  _tempHumidity = temp;*/
   //_timestampHumidity = millis();
 }
 

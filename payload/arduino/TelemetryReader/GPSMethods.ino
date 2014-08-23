@@ -42,20 +42,20 @@ void processGPSString(String gpsString) {
     processRMC(gpsString);
     //_timestampGps = millis();
   }
-  else if (name == "$GPVTG") {
+  /*else if (name == "$GPVTG") {
     ;
     //processVTG();
-  }
+  }*/
   else if (name == "$GPGGA") {
     if (_gpsGood) {
-      debug("Got good signal");
+      //debug("Got good signal");
       processGGA(gpsString);
     }
     else {
-      debug("No good signal");
+      //debug("No good signal");
     }
   }
-  else if (name == "$GPGSA") {
+  /*else if (name == "$GPGSA") {
     ;
     //processGSA();
   }
@@ -68,8 +68,8 @@ void processGPSString(String gpsString) {
     //processGLL();
   }
   else {
-    debug("Unknown GPS message: " + gpsString);
-  }
+    //debug("Unknown GPS message: " + gpsString);
+  }*/
 }
 
 void processRMC(String gpsString) {
@@ -82,17 +82,17 @@ void processRMC(String gpsString) {
     }
     else {
       if (field == 2) {
-        if (gpsString[i] == 'V') {
-          _gpsGood = false;
-          break;
-        }
-        else if (gpsString[i] == 'A') {
+        if (gpsString[i] == 'A') {
           _gpsGood = true;
           break;
         }
         else {
-          //debug("Unknown data status in GPS");
+          _gpsGood = false;
+          break;
         }
+        /*else {
+          //debug("Unknown data status in GPS");
+        }*/
       }
     }
   }
@@ -102,16 +102,12 @@ void processGGA(String gpsString) {
   //debug("processGGA()");
   float lat = 0.0, lon = 0.0;
   int alt;
-  String gpstime = "";
   String buf = "";
   int field = 0;
-  char charBuf[50];
+  char charBuf[15];
   for (int i = 0; i < gpsString.length(); i++) { // every char loop
     if (gpsString[i] == ',') { // If there's a separator
       switch (field) { // what to do when finished processing a field??
-      case 1:
-        gpstime = buf;
-        break;
       case 2:
         buf.substring(0, 2).toCharArray(charBuf, 50);
         lat = atof(charBuf);
@@ -122,9 +118,9 @@ void processGGA(String gpsString) {
         if (buf == "S") {
           lat *= -1;
         }
-        else if(buf != "N") {
-          debug("Neither north or south?" + gpsString);
-        }
+        /*else if(buf != "N") {
+          //debug("Neither north or south?" + gpsString);
+        }*/
         break;
       case 4:
         buf.substring(0, 3).toCharArray(charBuf, 50);
@@ -136,9 +132,9 @@ void processGGA(String gpsString) {
         if (buf == "W") {
           lon *= -1;
         }
-        else if(buf != "E") {
-          debug("Neither west or east??" + gpsString);
-        }
+        /*else if(buf != "E") {
+          //debug("Neither west or east??" + gpsString);
+        }*/
         break;
       case 9:
         buf.toCharArray(charBuf, 50);
@@ -155,7 +151,6 @@ void processGGA(String gpsString) {
   _lat = lat;
   _lon = lon;
   _alt = alt;
-  _gpstime = gpstime.substring(0, 6);
 }
 
 void gpsSetup() {

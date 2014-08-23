@@ -30,10 +30,12 @@
 #include <ADXL345.h>
 #include <MS561101BA.h>
 #include <SoftwareSerial.h>
+#include <Time.h>
+#include <DS1307RTC.h>
 
 const char START_OF_MESSAGE = '$';
 const char END_OF_MESSAGE = '\n';
-const int GPS_PIN = 4;
+//const int GPS_PIN = 4;
 const int VOLTAGE_PIN = A0;
 
 // Software Serial
@@ -47,17 +49,19 @@ HTU21D _humiditySensor;
 
 // for timekeeping purposes:
 unsigned long _timestamp = 0;
-unsigned long _timestampLED = 0;
+//unsigned long _timestampLED = 0;
 const int DELAY = 10;
+
+// fields for rtc
+String _time = "";
 
 // fields from gps sensor
 float _lat = 0.0;
 float _lon = 0.0;
 int _alt = 0.0;
-String _gpstime = "";
 
 boolean _gpsGood = false;
-boolean _lastGpsLight = false;
+//boolean _lastGpsLight = false;
 
 // fields from barometer
 float _pressure = 0.0;
@@ -67,7 +71,7 @@ float _tempPressure = 0.0;
 float _accX = 0.0, _accY = 0.0, _accZ = 0.0;
 
 // fields from magnetometer
-float _heading = 0;
+int _heading = 0;
 
 // fields for humidity
 float _humidity = 0.0, _tempHumidity = 0.0;
@@ -78,7 +82,7 @@ int _spin = 0;
 // fields for voltage
 float _voltage = 0.0;
 
-void setup() {  
+void setup() {
   // I2C Setup
   Wire.begin();
   _barometer.init(MS561101BA_ADDR_CSB_HIGH);
@@ -89,6 +93,7 @@ void setup() {
   _magnetometer.setMode(0);
   _humiditySensor.begin();
   gyroSetup();
+  setupRTC();
 
   // Serial Setup
   Serial.begin(9600);
@@ -100,8 +105,8 @@ void setup() {
   gpsSetup();
 
   // IO setup
-  pinMode(GPS_PIN, OUTPUT);
-  digitalWrite(GPS_PIN, LOW);
+  //pinMode(GPS_PIN, OUTPUT);
+  //digitalWrite(GPS_PIN, LOW);
 }
 
 void loop() {
@@ -109,6 +114,7 @@ void loop() {
   if (now - _timestamp >= 1000) {
     // get new field data
     handleSerial();
+    getTime();
     getBarometer();
     getAccelerometer();
     getMagnetometer();
@@ -119,10 +125,11 @@ void loop() {
     // handle string
     char charBuf[12];
     String telemetry = (String) START_OF_MESSAGE;
+    // time    
+      telemetry += _time; // time
+      telemetry += ',';
     // GPS
     if (_gpsGood) {
-      telemetry += _gpstime; // time
-      telemetry += ',';
       dtostrf(_lat, 4, 7, charBuf); // lat
       telemetry += charBuf;
       telemetry += ',';
@@ -133,7 +140,7 @@ void loop() {
       telemetry += ',';
     }
     else {
-      telemetry += ",,,,";
+      telemetry += ",,,";
     }
     // acceleration
     dtostrf(_accX, 3, 2, charBuf);
@@ -146,7 +153,7 @@ void loop() {
     telemetry += charBuf;
     telemetry += ',';
     // heading
-    telemetry += (String)int(_heading);
+    telemetry += (String)_heading;
     telemetry += ',';
     // pressure
     dtostrf(_pressure, 3, 2, charBuf);
@@ -180,6 +187,7 @@ void loop() {
     _serial.print(telemetry);
   }
 
+  /*
   if (_gpsGood) {
     digitalWrite(GPS_PIN, HIGH);
     _lastGpsLight = true;
@@ -198,5 +206,6 @@ void loop() {
       _timestampLED = millis();
     }
   }
-  handleSerial();  
+  */
+  handleSerial();
 }
