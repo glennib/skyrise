@@ -58,7 +58,7 @@ String _time = "";
 // fields from gps sensor
 float _lat = 0.0;
 float _lon = 0.0;
-int _alt = 0.0;
+unsigned int _alt = 0.0;
 
 boolean _gpsGood = false;
 //boolean _lastGpsLight = false;
@@ -68,7 +68,7 @@ float _pressure = 0.0;
 float _tempPressure = 0.0;
 
 // fields from accelerometer
-float _accX = 0.0, _accY = 0.0, _accZ = 0.0;
+int _acc = 0.0;
 
 // fields from magnetometer
 int _heading = 0;
@@ -136,21 +136,14 @@ void loop() {
       dtostrf(_lon, 4, 7, charBuf); // lon
       telemetry += charBuf;
       telemetry += ',';
-      telemetry += int(_alt); // alt
+      telemetry += _alt; // alt
       telemetry += ',';
     }
     else {
       telemetry += ",,,";
     }
     // acceleration
-    dtostrf(_accX, 3, 2, charBuf);
-    telemetry += charBuf;
-    telemetry += ',';
-    dtostrf(_accY, 3, 2, charBuf);
-    telemetry += charBuf;
-    telemetry += ',';
-    dtostrf(_accZ, 3, 2, charBuf);
-    telemetry += charBuf;
+    telemetry += _acc;
     telemetry += ',';
     // heading
     telemetry += (String)_heading;

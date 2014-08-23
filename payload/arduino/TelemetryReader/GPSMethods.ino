@@ -108,7 +108,7 @@ void processGGA(String gpsString) {
   for (int i = 0; i < gpsString.length(); i++) { // every char loop
     if (gpsString[i] == ',') { // If there's a separator
       switch (field) { // what to do when finished processing a field??
-      case 2:
+      case 2: // lat
         buf.substring(0, 2).toCharArray(charBuf, 50);
         lat = atof(charBuf);
         buf.substring(2).toCharArray(charBuf, 50);
@@ -122,7 +122,7 @@ void processGGA(String gpsString) {
           //debug("Neither north or south?" + gpsString);
         }*/
         break;
-      case 4:
+      case 4: // lon
         buf.substring(0, 3).toCharArray(charBuf, 50);
         lon = atof(charBuf);
         buf.substring(3).toCharArray(charBuf, 50);
@@ -136,7 +136,7 @@ void processGGA(String gpsString) {
           //debug("Neither west or east??" + gpsString);
         }*/
         break;
-      case 9:
+      case 9: // alt
         buf.toCharArray(charBuf, 50);
         alt = atoi(charBuf);
         break;

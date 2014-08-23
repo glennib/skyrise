@@ -17,16 +17,11 @@ void getBarometer() {
   //_timestampBarometer = millis();
 }
 
-#define G 9.81
 void getAccelerometer() {
-  float acc_data[3];
-  _accelerometer.get_Gxyz(acc_data);
+  int x, y, z;
+  _accelerometer.readAccel(&x, &y, &z);
   if (_accelerometer.status) {
-    _accX = acc_data[0] * G;
-    _accY = acc_data[1] * G;
-    _accZ = acc_data[2] * G;
-    
-    //_timestampAccelerometer = millis();
+    _acc = z * 41;
   }
 }
 

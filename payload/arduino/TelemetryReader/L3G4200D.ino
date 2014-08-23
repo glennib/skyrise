@@ -42,7 +42,7 @@ void writeRegister(int deviceAddress, byte address, byte val) {
 }
 
 int getSpin(){
-
+  /*
   byte xMSB = readRegister(L3G4200D_Address, 0x29);
   byte xLSB = readRegister(L3G4200D_Address, 0x28);
   int x = ((xMSB << 8) | xLSB) / 10;
@@ -51,14 +51,14 @@ int getSpin(){
   byte yMSB = readRegister(L3G4200D_Address, 0x2B);
   byte yLSB = readRegister(L3G4200D_Address, 0x2A);
   int y = ((yMSB << 8) | yLSB) / 10;
-  if (y * y < 20 * 20) y = 0;
+  if (y * y < 20 * 20) y = 0;*/
 
   byte zMSB = readRegister(L3G4200D_Address, 0x2D);
   byte zLSB = readRegister(L3G4200D_Address, 0x2C);
   int z = ((zMSB << 8) | zLSB) / 10;
   if (z * z < 20 * 20) z = 0;
   
-  return (int) sqrt(x * x + y * y + z * z);
+  return z;
 }
 
 int readRegister(int deviceAddress, byte address){
