@@ -11,5 +11,5 @@
 
 void getVoltage() {
   int input = analogRead(VOLTAGE_PIN);  
-  _voltage = input * 0.01611328125; // factor 0.0161... = 3.3*5/1024. For scaling.
+  _voltage = input * 16;//0.01611328125; // factor 0.0161... = 3.3*5/1024. For scaling.
 }

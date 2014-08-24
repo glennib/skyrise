@@ -20,7 +20,7 @@
  
  Author: Glenn Bitar
  Created: 2014-08-10
- Modified: 2014-08-21
+ Modified: 2014-08-24
  
  */
 
@@ -81,7 +81,7 @@ float _humidity = 0.0, _tempHumidity = 0.0;
 int _spin = 0;
 
 // fields for voltage
-float _voltage = 0.0;
+int _voltage = 0.0;
 
 void setup() {
   // I2C Setup
@@ -125,7 +125,7 @@ void loop() {
 
     // handle string
     char charBuf[12];
-    String telemetry = (String) START_OF_MESSAGE;
+    String telemetry = "" + START_OF_MESSAGE;
     // time    
       telemetry += _time; // time
       telemetry += ',';
@@ -149,7 +149,7 @@ void loop() {
     telemetry += _acc;
     telemetry += ',';
     // heading
-    telemetry += (String)_heading;
+    telemetry += _heading;
     telemetry += ',';
     // pressure
     dtostrf(_pressure, 3, 2, charBuf);
@@ -168,11 +168,11 @@ void loop() {
     telemetry += charBuf;
     telemetry += ',';
     // Voltage
-    dtostrf(_voltage, 3, 2, charBuf);
-    telemetry += charBuf;
+    //dtostrf(_voltage, 3, 2, charBuf);
+    telemetry += _voltage;
     telemetry += ',';
     // GYRO SPIN
-    telemetry += (String)_spin;
+    telemetry += _spin;
     
     // END
     telemetry += END_OF_MESSAGE;

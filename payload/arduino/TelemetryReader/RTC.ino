@@ -11,9 +11,9 @@ void getTime() {
 String print2digits(int number) {
   String o = "";
   if (number >= 0 && number < 10) {
-    o += "0";
+    o += '0';
   }
-  o += (String)number;
+  o += number;
   return o;
 }
 
