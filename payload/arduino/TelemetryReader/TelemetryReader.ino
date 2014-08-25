@@ -11,16 +11,19 @@
  * GY-63 Pressure sensor
  * GY-80 Accelerometer, magnetometer and gyroscope
  * ublox MAX-6Q GPS
+ * DCT Voltage sensor
  
  Third party libraries used:
- * FreeIMU
- * HTU21D 
+ * FreeIMU            http://www.varesano.net/projects/hardware/FreeIMU
+ * HTU21D             https://learn.sparkfun.com/tutorials/htu21d-humidity-sensor-hookup-guide/htu21d-library-and-functions
+ * Time               http://www.pjrc.com/teensy/td_libs_Time.html
+ * DS1307RTC          http://www.pjrc.com/teensy/td_libs_DS1307RTC.html
  
  Circuit is found in "ArduinoPayload.vsdx".
  
  Author: Glenn Bitar
  Created: 2014-08-10
- Modified: 2014-08-24
+ Modified: 2014-08-25
  
  */
 
@@ -38,6 +41,15 @@ const char END_OF_MESSAGE = '\n';
 //const int GPS_PIN = 4;
 const int VOLTAGE_PIN = A0;
 
+// Emergency LEDs
+const int EM_LED_1 = 10;
+const int EM_LED_2 = 16;
+const int EM_LED_3 = 14;
+const int EM_LED_4 = 15;
+
+// Sensor Relay output
+const int SENSOR_RELAY_ACTUATOR = 9;
+
 // Software Serial
 SoftwareSerial _serial(7, 8); // RX 7, TX 8, calls for interrupt 4?
 
@@ -50,7 +62,10 @@ HTU21D _humiditySensor;
 // for timekeeping purposes:
 unsigned long _timestamp = 0;
 //unsigned long _timestampLED = 0;
-const int DELAY = 10;
+//const int DELAY = 10;
+
+// emergency status
+boolean _emStatus = false;
 
 // fields for rtc
 String _time = "";
@@ -108,79 +123,92 @@ void setup() {
   // IO setup
   //pinMode(GPS_PIN, OUTPUT);
   //digitalWrite(GPS_PIN, LOW);
+  pinMode(EM_LED_1, OUTPUT);
+  pinMode(EM_LED_2, OUTPUT);
+  pinMode(EM_LED_3, OUTPUT);
+  pinMode(EM_LED_4, OUTPUT);  
+  pinMode(SENSOR_RELAY_ACTUATOR, OUTPUT);
 }
 
 void loop() {
-  unsigned long now = millis();
-  if (now - _timestamp >= 1000) {
-    // get new field data
-    handleSerial();
-    getTime();
-    getBarometer();
-    getAccelerometer();
-    getMagnetometer();
-    getHumiditySensor();
-    getGyroscope();
-    getVoltage();
-
-    // handle string
-    char charBuf[12];
-    String telemetry = "" + START_OF_MESSAGE;
-    // time    
-      telemetry += _time; // time
+  if (!_emStatus) {
+    unsigned long now = millis();
+    if (now - _timestamp >= 1000) {
+      // get new field data
+      handleSerial();
+      getTime();
+      getBarometer();
+      getAccelerometer();
+      getMagnetometer();
+      getHumiditySensor();
+      getGyroscope();
+      getVoltage();
+  
+      // handle string
+      char charBuf[12];
+      String telemetry = "";
+      telemetry += START_OF_MESSAGE;
+      // time    
+        telemetry += _time; // time
+        telemetry += ',';
+      // GPS
+      if (_gpsGood) {
+        dtostrf(_lat, 4, 7, charBuf); // lat
+        telemetry += charBuf;
+        telemetry += ',';
+        dtostrf(_lon, 4, 7, charBuf); // lon
+        telemetry += charBuf;
+        telemetry += ',';
+        telemetry += _alt; // alt
+        telemetry += ',';
+      }
+      else {
+        telemetry += ",,,";
+      }
+      telemetry += _sats;
       telemetry += ',';
-    // GPS
-    if (_gpsGood) {
-      dtostrf(_lat, 4, 7, charBuf); // lat
+      // acceleration
+      telemetry += _acc;
+      telemetry += ',';
+      // heading
+      telemetry += _heading;
+      telemetry += ',';
+      // pressure
+      dtostrf(_pressure, 3, 2, charBuf);
       telemetry += charBuf;
       telemetry += ',';
-      dtostrf(_lon, 4, 7, charBuf); // lon
+      // tempPressure
+      dtostrf(_tempPressure, 3, 1, charBuf);
       telemetry += charBuf;
       telemetry += ',';
-      telemetry += _alt; // alt
+      // humidity
+      dtostrf(_humidity, 3, 1, charBuf);
+      telemetry += charBuf;
       telemetry += ',';
+      // tempHumidity
+      dtostrf(_tempHumidity, 3, 1, charBuf);
+      telemetry += charBuf;
+      telemetry += ',';
+      // Voltage
+      //dtostrf(_voltage, 3, 2, charBuf);
+      telemetry += _voltage;
+      telemetry += ',';
+      // GYRO SPIN
+      telemetry += _spin;
+      
+      // END
+      telemetry += END_OF_MESSAGE;
+  
+      _timestamp = millis();
+  
+      Serial.print(telemetry);
+      _serial.print(telemetry);
+      
+      controlEmergency();
     }
-    else {
-      telemetry += ",,,";
-    }
-    telemetry += _sats;
-    telemetry += ',';
-    // acceleration
-    telemetry += _acc;
-    telemetry += ',';
-    // heading
-    telemetry += _heading;
-    telemetry += ',';
-    // pressure
-    dtostrf(_pressure, 3, 2, charBuf);
-    telemetry += charBuf;
-    telemetry += ',';
-    // tempPressure
-    dtostrf(_tempPressure, 3, 1, charBuf);
-    telemetry += charBuf;
-    telemetry += ',';
-    // humidity
-    dtostrf(_humidity, 3, 1, charBuf);
-    telemetry += charBuf;
-    telemetry += ',';
-    // tempHumidity
-    dtostrf(_tempHumidity, 3, 1, charBuf);
-    telemetry += charBuf;
-    telemetry += ',';
-    // Voltage
-    //dtostrf(_voltage, 3, 2, charBuf);
-    telemetry += _voltage;
-    telemetry += ',';
-    // GYRO SPIN
-    telemetry += _spin;
-    
-    // END
-    telemetry += END_OF_MESSAGE;
-
-    _timestamp = millis();
-
-    Serial.print(telemetry);
-    _serial.print(telemetry);
+  }
+  else {
+    enterEmergency();
   }
 
   /*
