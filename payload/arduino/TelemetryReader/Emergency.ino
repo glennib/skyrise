@@ -3,26 +3,9 @@
  Emergency methods that are used by the main program.
  
  */
-byte _countAcc = 0;
-int _lastAcc = 0;
-byte _countSpin = 0;
-void controlEmergency() {
-  if ((_acc - _lastAcc) * (_acc - _lastAcc) < 100) {
-    _countAcc++;
-  }
-  else {
-    _countAcc = 0;
-  }
-  _lastAcc = _acc;
-  
-  if (_spin == 0) {
-    _countSpin++;
-  }
-  else {
-    _countSpin = 0;
-  }
-  
-  if ((_countAcc >= 60 || _countSpin >= 60)) {
+
+void controlEmergency() {  
+  if (hour() > 16) {
     _emStatus = true;
   }
   else {
@@ -31,7 +14,7 @@ void controlEmergency() {
 }
 
 #define FLASH_DURATION 50
-#define WAIT_DURATION 
+#define WAIT_DURATION 800
 void enterEmergency() {
   digitalWrite(SENSOR_RELAY_ACTUATOR, HIGH);
   while (_emStatus) {
@@ -52,7 +35,7 @@ void enterEmergency() {
     delay(FLASH_DURATION);
     digitalWrite(EM_LED_4, LOW);
     
-    controlEmergency();
+    delay(WAIT_DURATION);
   }
   digitalWrite(SENSOR_RELAY_ACTUATOR, LOW);
 }
