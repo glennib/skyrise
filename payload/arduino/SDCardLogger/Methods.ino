@@ -41,9 +41,9 @@ void setupSD() {
   File dataFile = SD.open(FILE, FILE_WRITE);
 
   if (dataFile) {
-    dataFile.println("START");
+    dataFile.println("Time,Latitude,Longitude,Altitude,Satellites,Acceleration,Heading,Pressure,TempIn,Humidity,TempOut,Voltage,Spin");
     dataFile.close();
-    Serial.println("START");
+    Serial.println("Time,Latitude,Longitude,Altitude,Satellites,Acceleration,Heading,Pressure,TempIn,Humidity,TempOut,Voltage,Spin");
   }
   else {
     Serial.println("error opening " FILE);

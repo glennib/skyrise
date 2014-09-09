@@ -5,7 +5,7 @@
  */
 
 void controlEmergency() {  
-  if (hour() > 16) {
+  if (hour() > 24) {
     _emStatus = true;
   }
   else {

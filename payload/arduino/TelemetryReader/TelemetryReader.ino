@@ -42,10 +42,10 @@ const char END_OF_MESSAGE = '\n';
 const int VOLTAGE_PIN = A0;
 
 // Emergency LEDs
-const int EM_LED_1 = 2;
-const int EM_LED_2 = 3;
-const int EM_LED_3 = 14;
-const int EM_LED_4 = 15;
+const int EM_LED_1 = 4;
+const int EM_LED_2 = 5;
+const int EM_LED_3 = 6;
+const int EM_LED_4 = 7;
 
 // Sensor Relay output
 const int SENSOR_RELAY_ACTUATOR = 9;
