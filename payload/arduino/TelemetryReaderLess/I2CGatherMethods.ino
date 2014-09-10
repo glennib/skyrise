@@ -12,8 +12,8 @@ void getBarometer() {
   while (pressure == NULL) {
     pressure = _barometer.getPressure(MS561101BA_OSR_4096);
   }
-  _tempPressure = temp;
-  _pressure = pressure;
+  _tempPressure = temp * 10;
+  _pressure = pressure * 10000;
   //_timestampBarometer = millis();
 }
 
@@ -21,10 +21,8 @@ void getAccelerometer() {
   int x, y, z;
   _accelerometer.readAccel(&x, &y, &z);
   if (_accelerometer.status) {
-    //_acc = z * 41;
-    _accX = x;
-    _accY = y;
-    _accZ = z;
+    _accZ = z * 41;
+    _accA = (int)sqrt(z*z + y*y + z*z) * 41;
   }
 }
 
@@ -44,8 +42,8 @@ void getMagnetometer() {
 }
 
 void getHumiditySensor() {
-  _humidity = _humiditySensor.readHumidity();
-  _tempHumidity = _humiditySensor.readTemperature();
+  _humidity = (int)_humiditySensor.readHumidity();
+  _tempHumidity = (int)(_humiditySensor.readTemperature() * 10);
   
   /*_humidity = hum;
   _tempHumidity = temp;*/

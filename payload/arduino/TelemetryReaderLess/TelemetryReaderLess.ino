@@ -80,19 +80,18 @@ boolean _gpsGood = false;
 //boolean _lastGpsLight = false;
 
 // fields from barometer
-float _pressure = 0.0;
-float _tempPressure = 0.0;
+unsigned long _pressure = 0;
+int _tempPressure = 0;
 
 // fields from accelerometer
-int _accX = 0;
-int _accY = 0;
 int _accZ = 0;
+int _accA = 0;
 
 // fields from magnetometer
 int _heading = 0;
 
 // fields for humidity
-float _humidity = 0.0, _tempHumidity = 0.0;
+int _humidity = 0, _tempHumidity = 0;
 
 // fields for gyroscope
 int _spin = 0;
@@ -109,7 +108,7 @@ void setup() {
   _magnetometer.init(false);
   _magnetometer.calibrate(1, 32);
   _magnetometer.setMode(0);
-  //_humiditySensor.begin();
+  _humiditySensor.begin();
   gyroSetup();
   setupRTC();
 
@@ -170,30 +169,32 @@ void loop() {
       telemetry += _sats;
       telemetry += ',';
       // acceleration
-      telemetry += _accX;
-      telemetry += ',';
-      telemetry += _accY;
-      telemetry += ',';
       telemetry += _accZ;
+      telemetry += ',';
+      telemetry += _accA;
       telemetry += ',';
       // heading
       telemetry += _heading;
       telemetry += ',';
       // pressure
-      dtostrf(_pressure, 3, 2, charBuf);
-      telemetry += charBuf;
+      //dtostrf(_pressure, 3, 2, charBuf);
+      //telemetry += charBuf;
+      telemetry += _pressure;
       telemetry += ',';
       // tempPressure
-      dtostrf(_tempPressure, 3, 1, charBuf);
-      telemetry += charBuf;
+      //dtostrf(_tempPressure, 3, 1, charBuf);
+      //telemetry += charBuf;
+      telemetry += _tempPressure;
       telemetry += ',';
       // humidity
-      dtostrf(_humidity, 3, 1, charBuf);
-      telemetry += charBuf;
+      //dtostrf(_humidity, 3, 1, charBuf);
+      //telemetry += charBuf;
+      telemetry += _humidity;
       telemetry += ',';
       // tempHumidity
-      dtostrf(_tempHumidity, 3, 1, charBuf);
-      telemetry += charBuf;
+      //dtostrf(_tempHumidity, 3, 1, charBuf);
+      //telemetry += charBuf;
+      telemetry += _tempHumidity;
       telemetry += ',';
       // Voltage
       //dtostrf(_voltage, 3, 2, charBuf);
