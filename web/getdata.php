@@ -121,7 +121,8 @@ function pst_load_vars() {
 	  
 	//get latest input id
 	//execute the SQL query and return records
-	$result = mysql_query("SELECT lat, lon, alt, time, tempout FROM " . $pstconfig['dbtable'] . " WHERE lat IS NOT NULL AND lon IS NOT NULL" );
+	$result = mysql_query("SELECT time, lat, lon, alt, pressure, tempin, tempout, heading, accelx, humidity, spin, voltage  FROM " . $pstconfig['dbtable'] . " WHERE lat IS NOT NULL AND lon IS NOT NULL" );
+
 	
 	//
 	/// Add strings for lat/lon
@@ -132,7 +133,17 @@ function pst_load_vars() {
 	$lats = "var pstlats = [ ";
 	$lons = "var pstlons = [ ";
 	$alts = "var pstalts = [ ";
-	//$tempouts = "var psttempouts = [ ";
+	$pressures = "var pstpressures = [ ";
+	$tempins = "var psttempins = [ ";
+	$tempouts = "var psttempouts = [ ";
+	$headings = "var pstheadings = [ ";
+	$accels = "var pstaccels = [ ";
+	$humiditys = "var psthumiditys = [ ";
+	$spins = "var pstspins = [ ";
+	$voltages = "var pstvoltages = [ ";
+
+
+
 	
 	while ($row = mysql_fetch_array($result)) {
 		// Add values
@@ -140,7 +151,14 @@ function pst_load_vars() {
 		$lats .= $row['lat'] . ",";
 		$lons .= $row['lon'] . ",";
 		$alts .= $row['alt'] . ",";
-		//$tempouts .= $row['tempout'] . ",";
+		$pressures .= $row['pressure'] . ",";
+		$tempins .= $row['tempin'] . ",";
+		$tempouts .= $row['tempout'] . ",";
+		$headings .= $row['heading'] . ",";
+		$accels .= $row['accelx'] . ",";
+		$humiditys .= $row['humidity'] . ",";
+		$spins .= $row['spin'] . ",";
+		$voltages .= $row['voltage'] . ",";
 	}
 	
 	// N
@@ -148,15 +166,29 @@ function pst_load_vars() {
 	$lats .= "];\n";
 	$lons .= "];\n";
 	$alts .= "];\n";
-	//$tempouts .= "];\n";
+	$pressures .= "];\n";
+	$tempins .= "];\n";
+	$tempouts .= "];\n";
+	$headings .= "];\n";
+	$accels .= "];\n";
+	$humiditys .= "];\n";
+	$spins .= "];\n";
+	$voltages .= "];\n";
 ?>
 
 	<script type="text/javascript">
+		<?php echo $times; ?>
 		<?php echo $lats; ?>
 		<?php echo $lons; ?>
 		<?php echo $alts; ?>
-		<?php //echo $tempouts; ?>
-		<?php echo $times; ?>
+		<?php echo $pressures; ?>
+		<?php echo $tempins; ?>
+		<?php echo $tempouts; ?>
+		<?php echo $headings; ?>
+		<?php echo $accels; ?>
+		<?php echo $humiditys; ?>
+		<?php echo $spins; ?>
+		<?php echo $voltages; ?>
 	</script>
 	
 <?php

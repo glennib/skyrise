@@ -1,0 +1,8 @@
+.chartbutton {
+	cursor: pointer;
+	border: 1px solid grey;
+	padding: 3px;
+}
+.chartbutton:hover {
+background-color: #D0D0D0;
+};

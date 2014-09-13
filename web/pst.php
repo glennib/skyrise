@@ -30,6 +30,8 @@ add_action( 'wp_enqueue_scripts', 'pst_register_plugin_styles' );
 function pst_register_plugin_styles() {
 	wp_register_style('fontastic', '//fontastic.s3.amazonaws.com/nPJXzizDbj2MwBNG7A8Eti/icons.css', array(), '1.0', false);
 	wp_enqueue_style('fontastic');
+	wp_register_style('pststyles', plugins_url( 'pst.css', __FILE__ ));
+	wp_enqueue_style('pststyles');
 };
 
 

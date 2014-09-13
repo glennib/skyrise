@@ -149,23 +149,33 @@ function gcLoadScript() {
 
 function gcDrawChart() {
 
-  // Create the data table.
+  // Create the data table. 'alt','pressure','tempin','tempout','heading','accel','humidity','spin','voltage'
   data = new google.visualization.DataTable();
   data.addColumn('datetime', 'Time');
   data.addColumn('number', 'Altitude');
+  data.addColumn('number', 'Pressure');
+  data.addColumn('number', 'Temperature Inside');
+  data.addColumn('number', 'Temperature Outside');
+  data.addColumn('number', 'Heading');
+  data.addColumn('number', 'Acceleration');
+  data.addColumn('number', 'Humidity');
+  data.addColumn('number', 'Spin');
+  data.addColumn('number', 'Voltage');
+
+
   
   // Add each row
   for (i = 0; i < psttimes.length; i++) { 
-	data.addRow([new Date(psttimes[i]), pstalts[i]]);
+	data.addRow([new Date(psttimes[i]), pstalts[i], pstpressures[i], psttempins[i], psttempouts[i], pstheadings[i], pstaccels[i], psthumiditys[i], pstspins[i], pstvoltages[i]]);
   }
 
   
   // DataView - a view of the table..
-  //dataview = new google.visualization.DataView(data)
-  //dataview.setColumns([0,1]);
+  dataview = new google.visualization.DataView(data)
+  dataview.setColumns([0,1]);
   
   // Set chart options
-  var options = {'title':'Altitude',
+  var options = {'title':'Time series data',
                  'width':642,
                  'height':400,
 				 animation: {
@@ -177,8 +187,19 @@ function gcDrawChart() {
   // Instantiate and draw our chart, passing in some options.
   chart = new google.visualization.LineChart(document.getElementById('chart-canvas'));
   
-  chart.draw(data, options);
+  chart.draw(dataview, options);
   
+  /* Set varables an titles
+  variables = {   'alt':'Altitude',
+                      'pressure':'Pressure',
+                      'tempout':'Temperature Outside',
+                      'tempin':'Temperature Inside',
+                      'heading':'Heading',
+                      'accel':'Acceleration',
+                      'humidity':'Humidity',
+                      'spin':'Spin',
+                      'voltage':'Battery voltage'}; */
+
   // Set varables an titles
   variables = {   'alt':'Altitude',
                       'pressure':'Pressure',
@@ -188,7 +209,7 @@ function gcDrawChart() {
                       'accel':'Acceleration',
                       'humidity':'Humidity',
                       'spin':'Spin',
-                      'voltage':'Battery voltage'};
+                      'voltage':'Battery voltage'}; 
 
   // Buttons for changing values
 
@@ -202,11 +223,14 @@ function gcDrawChart() {
 
     if(document.getElementById(buttonID)) {
       button[ii] = document.getElementById(buttonID);
-      button[ii].setAttribute('data-key',key);
-      button[ii].onclick = function() {
-        var localkey = this.getAttribute("data-key");
 
-        // Ajax load
+      button[ii].setAttribute('data-key',ii);
+      button[ii].onclick = function() {
+        var j = this.getAttribute("data-key");
+        dataview.setColumns([0,parseInt(j)]);
+        chart.draw(dataview, options);
+
+        /* Ajax load - replaced by dataview
         var xmlhttp;
         if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
             xmlhttp = new XMLHttpRequest();
@@ -238,7 +262,7 @@ function gcDrawChart() {
         }
 
         xmlhttp.open("GET", pullDataUrl + '?var=' + localkey, true);
-        xmlhttp.send();
+        xmlhttp.send(); */
       }
     }
     ii=ii+1; //increment ii
